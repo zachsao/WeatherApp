@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".ui.ForecastDetailsFragment"
+                                                   android:id="@+id/forecastDetailsFragment">
+
+
+    <TextView
+            android:text="Sunny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/global_forecast_textview"
+            android:fontFamily="@font/roboto_light" android:textSize="22sp" android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+            android:text="15°"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/temperature_textview"
+            android:fontFamily="@font/roboto_light" android:textStyle="bold" android:textSize="85sp"
+            android:layout_marginStart="16dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/global_forecast_textview"/>
+    <ImageView
+            android:src="@drawable/sunny"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/imageView" app:layout_constraintStart_toEndOf="@+id/temperature_textview"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/temperature_textview"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintBottom_toBottomOf="@+id/temperature_textview"/>
+    <TextView
+            android:text=" Max : 17°"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/max_temperature_textview"
+            android:fontFamily="@font/roboto_light"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"/>
+    <TextView
+            android:text="Min : 9°"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/min_temperature_textview"
+            android:fontFamily="@font/roboto_light"
+            app:layout_constraintTop_toBottomOf="@+id/max_temperature_textview"
+            app:layout_constraintStart_toStartOf="@+id/max_temperature_textview"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

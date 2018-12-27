@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:orientation="horizontal"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:id="@+id/container">
+
+    <TextView
+            android:text="Caen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/city_name_textview"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/roboto_light" android:textSize="22sp" android:textStyle="bold"
+            android:maxLines="1" android:ellipsize="end"/>
+    <TextView
+            android:text="Sunny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/city_forecast_textview" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/city_name_textview" android:fontFamily="@font/roboto_light"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp" app:srcCompat="@drawable/sunny"
+            android:id="@+id/forceast_imageView" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.562"
+            android:layout_marginEnd="32dp" app:layout_constraintEnd_toStartOf="@+id/temperatures_layout"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/temperatures_layout"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent">
+        <TextView
+                android:text="15°"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/max_temperature_textview"
+                android:fontFamily="@font/roboto_light"
+                tools:layout_editor_absoluteY="17dp" tools:layout_editor_absoluteX="313dp"/>
+        <TextView
+                android:text="9°"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/min_temperature_textview"
+                android:fontFamily="@font/roboto_light" tools:layout_editor_absoluteY="45dp"
+                tools:layout_editor_absoluteX="321dp" android:layout_gravity="right"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
