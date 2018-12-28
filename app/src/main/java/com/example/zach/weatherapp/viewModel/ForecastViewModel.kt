@@ -1,6 +1,7 @@
 package com.example.zach.weatherapp.viewModel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.zach.weatherapp.data.Forecast
 
@@ -11,6 +12,9 @@ class ForecastViewModel(private var forecast: LiveData<Forecast>, private var ci
     }
 
     fun getForecast(): LiveData<Forecast> {
-        return forecast
+        val data = MutableLiveData<Forecast>()
+        val forecast = Forecast("sunny",13)
+        data.value = forecast
+        return data
     }
 }

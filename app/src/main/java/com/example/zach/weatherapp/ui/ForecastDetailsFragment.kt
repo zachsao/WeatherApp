@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.Forecast
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
+import kotlinx.android.synthetic.main.fragment_forecast_details.*
 
 
 /**
@@ -27,7 +28,7 @@ class ForecastDetailsFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ForecastViewModel::class.java!!)
         viewModel.init(cityID)
 
-        viewModel.getForecast().observe(this, Observer {forecast: Forecast -> })
+        viewModel.getForecast().observe(this, Observer {forecast: Forecast -> temperature_textview.text=forecast.temperature.toString()})
     }
 
     override fun onCreateView(
