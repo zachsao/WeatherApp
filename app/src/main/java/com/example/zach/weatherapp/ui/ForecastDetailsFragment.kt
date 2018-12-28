@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.Forecast
+import com.example.zach.weatherapp.utils.injectorUtils
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
 
@@ -25,10 +26,14 @@ class ForecastDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ForecastViewModel::class.java!!)
+        val factory = injectorUtils.provideForecastViewModelFactory()
+        viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
         viewModel.init(cityID)
 
-        viewModel.getForecast().observe(this, Observer {forecast: Forecast -> temperature_textview.text=forecast.temperature.toString()})
+        viewModel.getForecast().observe(this, Observer {forecast: Forecast ->
+            temperature_textview.text=forecast.temperature.toString()
+            global_forecast_textview.text = forecast.weather
+        })
     }
 
     override fun onCreateView(

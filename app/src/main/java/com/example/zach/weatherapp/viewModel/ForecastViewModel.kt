@@ -4,17 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.zach.weatherapp.data.Forecast
+import com.example.zach.weatherapp.data.ForecastRepository
 
-class ForecastViewModel(private var forecast: LiveData<Forecast>, private var cityId: Int ):ViewModel() {
+class ForecastViewModel(private var forecastRepo: ForecastRepository ):ViewModel() {
+    private lateinit var forecast:LiveData<Forecast>
 
     fun init(cityId: Int) {
-        this.cityId = cityId
+        forecast = forecastRepo.getForecast(cityId)
     }
 
     fun getForecast(): LiveData<Forecast> {
-        val data = MutableLiveData<Forecast>()
-        val forecast = Forecast("sunny",13)
-        data.value = forecast
-        return data
+        return forecast
     }
 }
