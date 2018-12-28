@@ -8,8 +8,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.R
+import com.example.zach.weatherapp.data.City
 
-class ForecastAdapter(private val myDataset: Array<String>) :
+class ForecastAdapter(private val myDataset: ArrayList<City>) :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -17,6 +18,8 @@ class ForecastAdapter(private val myDataset: Array<String>) :
     // you provide access to all the views for a data item in a view holder.
     class ForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val parent = itemView.findViewById<ConstraintLayout>(R.id.container)
+        val city_name = itemView.findViewById<TextView>(R.id.city_name_textview)
+
     }
 
 
@@ -36,6 +39,7 @@ class ForecastAdapter(private val myDataset: Array<String>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
+        holder.city_name.text = myDataset.get(position).name
         holder.parent.setOnClickListener{ view: View ->
             Navigation.findNavController(view).navigate(R.id.action_listFragment_to_forecastDetailsFragment)}
     }
