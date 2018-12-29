@@ -24,8 +24,11 @@ class ForecastDetailsFragment : Fragment() {
     private val cityID =  2172797
     private lateinit var viewModel: ForecastViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val factory = injectorUtils.provideForecastViewModelFactory()
         viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
         viewModel.init(cityID)
@@ -34,13 +37,6 @@ class ForecastDetailsFragment : Fragment() {
             temperature_textview.text=forecast.temp.toString()
             global_forecast_textview.text = forecast.description
         })
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_forecast_details, container, false)
     }
 
