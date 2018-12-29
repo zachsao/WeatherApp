@@ -36,4 +36,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha09'
     implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-alpha09"
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
 }
