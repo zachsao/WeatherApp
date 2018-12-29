@@ -49,13 +49,12 @@ class ForecastRepository {
             override fun onResponse(call: Call<OpenWeatherCycleDataResponse>,
                                     response: Response<OpenWeatherCycleDataResponse>){
                 val cities = response.body()?.list?.map {city ->
-                    City(city.id,city.name,Coordinates(city.coord.lat,city.coord.lon),Forecast(city.main.temp,city.main.pressure,city.main.humidity,
-                        city.main.temp_min,city.main.temp_max,city.main.description))
+                    City(city.id,city.name,city.coord,city.weather,city.main)
                 }
                 data.value = cities
             }
             override fun onFailure(call: Call<OpenWeatherCycleDataResponse>, t: Throwable) {
-                System.out.println("Erreur mec : " + t.message)
+                System.out.println(t.message)
                 //To change body of created functions use File | Settings | File Templates.
             }
         })
