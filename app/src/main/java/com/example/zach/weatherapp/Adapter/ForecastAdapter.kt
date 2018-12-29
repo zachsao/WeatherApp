@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 
-class ForecastAdapter(private val myDataset: ArrayList<City>) :
+class ForecastAdapter(private val myDataset: List<City>) :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -27,7 +27,6 @@ class ForecastAdapter(private val myDataset: ArrayList<City>) :
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ForecastAdapter.ForecastViewHolder {
         val context = parent.context
-
         val layoutIdForListItem = R.layout.city_list_item
         val inflater = LayoutInflater.from(context)
         val shouldAttachToParentImmediately = false

@@ -40,24 +40,21 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_list, container, false)
         viewManager = LinearLayoutManager(activity)
-        val myDataset = arrayListOf<City>()
+        recyclerView = rootView.findViewById(R.id.list)
 
-        viewAdapter = ForecastAdapter(myDataset)
-
-        recyclerView = rootView.findViewById<RecyclerView>(R.id.list).apply {
-
-            // use a linear layout manager
-            layoutManager = viewManager
-
-            // specify an viewAdapter (see also next example)
-            adapter = viewAdapter
-
-        }
         val factory = injectorUtils.provideCityListViewModelFactory()
         val viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
         viewModel.init()
         viewModel.getCities().observe(this, Observer { cities ->
-            cities.forEach { city -> myDataset.add(city) }
+            //cities.forEach { city -> myDataset.add(city) }
+            var myDataset = cities
+            viewAdapter = ForecastAdapter(myDataset)
+            recyclerView.apply {
+                // use a linear layout manager
+                layoutManager = viewManager
+                // specify a viewAdapter
+                adapter = viewAdapter
+            }
         })
         return rootView
     }

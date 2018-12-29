@@ -1,7 +1,8 @@
 package com.example.zach.weatherapp.data
 
-data class Forecast( var weather:String,
-                     var temperature:Int,
-                     var max_temperature:Int,
-                     var min_temperature: Int) {
-}
+data class Forecast(var temp:Double,
+                    var pressure:Int,
+                    var humidity: Int,
+                    var temp_min: Double,
+                    var temp_max: Double,
+                    var description: String?)

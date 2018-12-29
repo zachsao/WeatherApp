@@ -31,8 +31,8 @@ class ForecastDetailsFragment : Fragment() {
         viewModel.init(cityID)
 
         viewModel.getForecast().observe(this, Observer {forecast: Forecast ->
-            temperature_textview.text=forecast.temperature.toString()
-            global_forecast_textview.text = forecast.weather
+            temperature_textview.text=forecast.temp.toString()
+            global_forecast_textview.text = forecast.description
         })
     }
 
