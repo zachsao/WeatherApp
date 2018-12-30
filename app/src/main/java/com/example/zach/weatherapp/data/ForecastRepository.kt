@@ -61,7 +61,7 @@ class ForecastRepository {
             override fun onResponse(call: Call<OpenWeatherCycleDataResponse>,
                                     response: Response<OpenWeatherCycleDataResponse>){
                 val cities = response.body()?.list?.map {city ->
-                    City(city.id,city.name,city.coord,city.weather,city.main)
+                    City(city.id,city.name,city.coord,city.weather,city.main,city.wind)
                 }
                 data.value = cities
             }

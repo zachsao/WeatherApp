@@ -40,11 +40,13 @@ class ForecastDetailsFragment : Fragment() {
 
     fun displayData(){
         viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City ->
-            temperature_textview.text= weatherInfo.main.temp.toString()
+            temperature_textview.text= "${weatherInfo.main.temp}°C"
             weather_description_textview.text = weatherInfo.weather[0].description
-            max_temperature_textview.text = weatherInfo.main.temp_max.toString()
-            min_temperature_textview.text = weatherInfo.main.temp_min.toString()
-
+            max_temperature_textview.text = "${weatherInfo.main.temp_max}°C"
+            min_temperature_textview.text = "${weatherInfo.main.temp_min}°C"
+            pressure_value_textview.text = "${weatherInfo.main.pressure} hPa"
+            humidity_value_textview.text = "${weatherInfo.main.humidity}%"
+            wind_value_textview.text = "${weatherInfo.wind.speed} m/s"
         })
     }
 
