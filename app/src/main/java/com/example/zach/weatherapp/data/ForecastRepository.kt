@@ -39,12 +39,11 @@ class ForecastRepository {
         service = retrofit.create(OpenWeatherApi::class.java)
     }
 
-    fun getForecast(cityId: Int): LiveData<Forecast> {
+    fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
         // This isn't an optimal implementation. We'll fix it later.
-        val data = MutableLiveData<Forecast>()
-        //dummy forecast
-        val forecast = Forecast(14.0,1010,94,9.0,18.0,"drizzle")
-        data.value = forecast
+        val data = MutableLiveData<City>()
+        val city = weatherCache.getSelectedCity(cityId)
+        data.value = city
         return data
     }
 
