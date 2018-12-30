@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.injectorUtils
@@ -47,6 +48,9 @@ class ForecastDetailsFragment : Fragment() {
             pressure_value_textview.text = "${weatherInfo.main.pressure} hPa"
             humidity_value_textview.text = "${weatherInfo.main.humidity}%"
             wind_value_textview.text = "${weatherInfo.wind.speed} m/s"
+            Glide.with(activity)
+                .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
+                .into(imageView)
         })
     }
 
