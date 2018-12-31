@@ -8,6 +8,9 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
+def OPEN_WEATHER_APP_ID = '"' + OpenWeatherMapApiKey + '"' ?: '"Define openWeather app id"'
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -17,6 +20,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        each{ type -> type.buildConfigField 'String', 'OpenWeatherMapApiKey', OPEN_WEATHER_APP_ID}
+        manifestPlaceholders = [OPEN_WEATHER_KEY: OPEN_WEATHER_APP_ID]
     }
     buildTypes {
         release {

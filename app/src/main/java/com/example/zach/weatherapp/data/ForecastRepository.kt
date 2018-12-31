@@ -4,6 +4,7 @@ package com.example.zach.weatherapp.data
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
+import com.example.zach.weatherapp.BuildConfig
 import com.example.zach.weatherapp.utils.OpenWeatherApi
 import com.example.zach.weatherapp.utils.WeatherCache
 import retrofit2.Call
@@ -18,7 +19,7 @@ class ForecastRepository {
     private val LOG_TAG = "ForecastRepository"
 
     private var service: OpenWeatherApi
-    private val API_KEY = "106f229f3c174ddd91281c21ff5783da"
+    private val API_KEY = BuildConfig.OpenWeatherMapApiKey
     private var weatherCache = WeatherCache()
 
     companion object {
