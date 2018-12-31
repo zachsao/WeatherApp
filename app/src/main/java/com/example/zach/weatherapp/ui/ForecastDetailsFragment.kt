@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.zach.weatherapp.R
-import com.example.zach.weatherapp.data.Forecast
+import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.injectorUtils
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
@@ -21,27 +21,31 @@ import kotlinx.android.synthetic.main.fragment_forecast_details.*
  */
 class ForecastDetailsFragment : Fragment() {
 
-    private val cityID =  2172797
     private lateinit var viewModel: ForecastViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val factory = injectorUtils.provideForecastViewModelFactory()
-        viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
-        viewModel.init(cityID)
-
-        viewModel.getForecast().observe(this, Observer {forecast: Forecast ->
-            temperature_textview.text=forecast.temperature.toString()
-            global_forecast_textview.text = forecast.weather
-        })
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
+        val factory = injectorUtils.provideForecastViewModelFactory()
+        viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
+        viewModel.init(cityID)
+
+        displayData()
+
         return inflater.inflate(R.layout.fragment_forecast_details, container, false)
+    }
+
+    fun displayData(){
+        viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City ->
+            temperature_textview.text= weatherInfo.main.temp.toString()
+            weather_description_textview.text = weatherInfo.weather[0].description
+            max_temperature_textview.text = weatherInfo.main.temp_max.toString()
+            min_temperature_textview.text = weatherInfo.main.temp_min.toString()
+
+        })
     }
 
 

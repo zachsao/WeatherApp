@@ -11,5 +11,7 @@
     </fragment>
     <fragment android:id="@+id/forecastDetailsFragment"
               android:name="com.example.zach.weatherapp.ui.ForecastDetailsFragment"
-              android:label="fragment_forecast_details" tools:layout="@layout/fragment_forecast_details"/>
+              android:label="fragment_forecast_details" tools:layout="@layout/fragment_forecast_details">
+        <argument android:name="cityId" app:argType="integer"/>
+    </fragment>
 </navigation>
