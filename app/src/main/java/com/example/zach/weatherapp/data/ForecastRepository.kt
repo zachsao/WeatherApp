@@ -54,8 +54,6 @@ class ForecastRepository {
 
         val cached = weatherCache.getCachedCities()
         if(cached!=null){
-            Log.d(LOG_TAG,"Ces data proviennent du cache")
-            Log.d(LOG_TAG,API_KEY)
             return cached
         }
         val data = MutableLiveData<List<City>>()
