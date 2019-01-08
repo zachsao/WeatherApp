@@ -4,18 +4,11 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-<<<<<<< HEAD
-apply plugin: 'androidx.navigation.safeargs'
-
-=======
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
-def OPEN_WEATHER_APP_ID = '"' + OpenWeatherMapApiKey + '"' ?: '"Define openWeather app id"'
 
-
->>>>>>> feature/update_forecast_details_fragment_ui
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -26,8 +19,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        each{ type -> type.buildConfigField 'String', 'OpenWeatherMapApiKey', OPEN_WEATHER_APP_ID}
-        manifestPlaceholders = [OPEN_WEATHER_KEY: OPEN_WEATHER_APP_ID]
     }
     buildTypes {
         release {
@@ -35,6 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each{ it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', OpenWeatherApiKey}
 }
 
 dependencies {
@@ -54,9 +47,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.0.0"
-<<<<<<< HEAD
-=======
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
->>>>>>> feature/update_forecast_details_fragment_ui
+
 }

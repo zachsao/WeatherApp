@@ -21,7 +21,7 @@ class ForecastRepository {
 
     private var service: OpenWeatherApi
 
-    private val API_KEY = BuildConfig.OpenWeatherMapApiKey
+    private val API_KEY = BuildConfig.OPEN_WEATHER_MAP_API_KEY
     private var weatherCache = WeatherCache()
 
     companion object {
@@ -55,6 +55,7 @@ class ForecastRepository {
         val cached = weatherCache.getCachedCities()
         if(cached!=null){
             Log.d(LOG_TAG,"Ces data proviennent du cache")
+            Log.d(LOG_TAG,API_KEY)
             return cached
         }
         val data = MutableLiveData<List<City>>()
