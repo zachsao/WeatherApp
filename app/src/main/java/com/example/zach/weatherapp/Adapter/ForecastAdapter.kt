@@ -1,6 +1,7 @@
 package com.example.zach.weatherapp.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,7 @@ class ForecastAdapter(var myDataset: List<City>) :
             .load("http://openweathermap.org/img/w/${myDataset[position].weather[0].icon}.png")
             .into(holder.weatherImage)
         holder.parent.setOnClickListener{ view: View ->
+            Log.d("Cache", myDataset[position].toString())
             Navigation.findNavController(view).navigate(ListFragmentDirections.actionListFragmentToForecastDetailsFragment(myDataset[position].id))}
     }
 

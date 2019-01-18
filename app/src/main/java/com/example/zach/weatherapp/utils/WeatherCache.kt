@@ -1,28 +1,20 @@
 package com.example.zach.weatherapp.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.zach.weatherapp.data.City
+
+import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
+import io.reactivex.Single
 
 class WeatherCache{
 
-    private var cache: MutableLiveData<List<City>>? = null
+    private var cache: Single<OpenWeatherCycleDataResponse>? = null
 
-    fun getCachedCities():MutableLiveData<List<City>>?{
+    fun getCachedCities():Single<OpenWeatherCycleDataResponse>?{
         return cache
     }
 
-    fun getSelectedCity(cityId: Int):City?{
-        var selectedCity:City? = null
-        getCachedCities()?.value?.forEach { city ->
-            when(city.id){
-                cityId -> selectedCity = city
-            }
-        }
-        return selectedCity
-    }
 
-    fun put(data: MutableLiveData<List<City>>?){
+
+    fun put(data: Single<OpenWeatherCycleDataResponse>?){
         cache = data
     }
 }

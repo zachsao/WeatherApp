@@ -2,6 +2,7 @@ package com.example.zach.weatherapp.ui
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,17 +41,21 @@ class ForecastDetailsFragment : Fragment() {
     }
 
     fun displayData(){
-        viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City ->
-            temperature_textview.text= "${weatherInfo.main.temp}°C"
-            weather_description_textview.text = weatherInfo.weather[0].description
-            max_temperature_textview.text = "${weatherInfo.main.temp_max}°C"
-            min_temperature_textview.text = "${weatherInfo.main.temp_min}°C"
-            pressure_value_textview.text = "${weatherInfo.main.pressure} hPa"
-            humidity_value_textview.text = "${weatherInfo.main.humidity}%"
-            wind_value_textview.text = "${weatherInfo.wind.speed} m/s"
-            Glide.with(activity)
-                .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
-                .into(imageView)
+        viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City? ->
+
+            if (weatherInfo != null) {
+                temperature_textview.text= "${weatherInfo.main.temp}°C"
+                weather_description_textview.text = weatherInfo.weather[0].description
+                max_temperature_textview.text = "${weatherInfo.main.temp_max}°C"
+                min_temperature_textview.text = "${weatherInfo.main.temp_min}°C"
+                pressure_value_textview.text = "${weatherInfo.main.pressure} hPa"
+                humidity_value_textview.text = "${weatherInfo.main.humidity}%"
+                wind_value_textview.text = "${weatherInfo.wind.speed} m/s"
+                Glide.with(activity)
+                    .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
+                    .into(imageView)
+            }
+
         })
     }
 

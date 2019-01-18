@@ -45,7 +45,6 @@ class ListFragment : Fragment() {
 
         val factory = injectorUtils.provideCityListViewModelFactory()
         val viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
-        viewModel.init()
         viewModel.getCities().observe(this, Observer { cities ->
             //cities.forEach { city -> myDataset.add(city) }
             var myDataset = cities

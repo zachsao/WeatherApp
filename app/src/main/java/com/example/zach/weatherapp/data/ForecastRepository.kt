@@ -1,6 +1,7 @@
 package com.example.zach.weatherapp.data
 
 
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
@@ -8,16 +9,15 @@ import androidx.lifecycle.LiveData
 import com.example.zach.weatherapp.BuildConfig
 import com.example.zach.weatherapp.utils.OpenWeatherApi
 import com.example.zach.weatherapp.utils.WeatherCache
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.Single
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 class ForecastRepository {
 
-    private val LOG_TAG = "ForecastRepository"
+
 
     private var service: OpenWeatherApi
 
@@ -25,6 +25,7 @@ class ForecastRepository {
     private var weatherCache = WeatherCache()
 
     companion object {
+        private val TAG = "ForecastRepository"
         @Volatile private var instance: ForecastRepository? = null
 
         fun getInstance() =
@@ -36,28 +37,23 @@ class ForecastRepository {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://api.openweathermap.org")
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
 
         service = retrofit.create(OpenWeatherApi::class.java)
     }
 
-    fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
-        // This isn't an optimal implementation. We'll fix it later.
-        val data = MutableLiveData<City>()
-        val city = weatherCache.getSelectedCity(cityId)
-        data.value = city
-        return data
-    }
+    fun getDetailedWeatherInfo(): Single<OpenWeatherCycleDataResponse>? = weatherCache.getCachedCities()
 
-    fun getCities(): MutableLiveData<List<City>>{
 
-        val cached = weatherCache.getCachedCities()
+
+    fun getCities(): Single<OpenWeatherCycleDataResponse> {
+
+        /*val cached = weatherCache.getCachedCities()
         if(cached!=null){
             return cached
         }
-        val data = MutableLiveData<List<City>>()
-        weatherCache.put(data)
 
         service.getCities(API_KEY).enqueue(object : Callback<OpenWeatherCycleDataResponse> {
             override fun onResponse(call: Call<OpenWeatherCycleDataResponse>,
@@ -71,8 +67,14 @@ class ForecastRepository {
                 System.out.println(t.message)
                 //To change body of created functions use File | Settings | File Templates.
             }
-        })
+        })*/
 
-        return data
+        val response = service.getCities(API_KEY)
+
+        weatherCache.put(response)
+
+        return response
     }
+
+
 }
