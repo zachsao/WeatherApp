@@ -44,7 +44,7 @@ class ForecastDetailsFragment : Fragment() {
         viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City? ->
 
             if (weatherInfo != null) {
-                temperature_textview.text= "${weatherInfo.main.temp}°C"
+                temperature_textview.text= "${weatherInfo.main.temp.toInt()}°C"
                 weather_description_textview.text = weatherInfo.weather[0].description
                 max_temperature_textview.text = "${weatherInfo.main.temp_max}°C"
                 min_temperature_textview.text = "${weatherInfo.main.temp_min}°C"

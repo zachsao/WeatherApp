@@ -11,9 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 
-class CityListViewModel(private var forecastRepo: ForecastRepository):ViewModel() {
+class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRepository):ViewModel() {
     private var cities : MutableLiveData<List<City>> = MutableLiveData()
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
