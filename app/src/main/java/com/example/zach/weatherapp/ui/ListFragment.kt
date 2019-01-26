@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
-import com.example.zach.weatherapp.utils.injectorUtils
 import com.example.zach.weatherapp.viewModel.CityListViewModel
 import com.example.zach.weatherapp.viewModel.CityListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.view.*
@@ -53,10 +52,8 @@ class ListFragment : Fragment() {
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
         viewModel.getCities().observe(this, Observer { cities ->
-            //cities.forEach { city -> myDataset.add(city) }
-            var myDataset = cities
             Log.d(TAG,cities.toString())
-            viewAdapter = ForecastAdapter(myDataset)
+            viewAdapter = ForecastAdapter(cities)
             recyclerView.apply {
                 // use a linear layout manager
                 layoutManager = viewManager
@@ -64,8 +61,6 @@ class ListFragment : Fragment() {
                 adapter = viewAdapter
             }
         })
-
-
         return rootView
     }
 }

@@ -12,9 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
-import com.example.zach.weatherapp.utils.injectorUtils
+import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
+import com.example.zach.weatherapp.viewModel.ForecastViewModelFactory
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
+import javax.inject.Inject
 
 
 /**
@@ -23,26 +25,31 @@ import kotlinx.android.synthetic.main.fragment_forecast_details.*
  */
 class ForecastDetailsFragment : Fragment() {
 
-    private lateinit var viewModel: ForecastViewModel
+    @Inject lateinit var viewModel: ForecastViewModel
+    @Inject lateinit var factory: ForecastViewModelFactory
 
+    private val TAG = "DetailsFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
-        val factory = injectorUtils.provideForecastViewModelFactory()
-        viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
-        viewModel.init(cityID)
+        val component = DaggerAppComponent.create()
+        component.inject(this)
 
-        displayData()
+        val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
+
+        viewModel = ViewModelProviders.of(this,factory).get(ForecastViewModel::class.java)
+
+
+        displayData(cityID)
 
         return inflater.inflate(R.layout.fragment_forecast_details, container, false)
     }
 
-    fun displayData(){
-        viewModel.getDetailedWeatherInfo().observe(this, Observer {weatherInfo: City? ->
-
+    fun displayData(cityId: Int){
+        viewModel.getDetailedWeatherInfo(cityId).observe(this, Observer {weatherInfo: City? ->
+            Log.d(TAG, weatherInfo.toString())
             if (weatherInfo != null) {
                 temperature_textview.text= "${weatherInfo.main.temp.toInt()}°C"
                 weather_description_textview.text = weatherInfo.weather[0].description

@@ -19,6 +19,9 @@ import kotlinx.android.synthetic.main.city_list_item.view.*
 class ForecastAdapter(var myDataset: List<City>) :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
+    companion object {
+        private val TAG = "ForecastAdapter"
+    }
     var context:Context?=null
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -59,7 +62,7 @@ class ForecastAdapter(var myDataset: List<City>) :
             .load("http://openweathermap.org/img/w/${myDataset[position].weather[0].icon}.png")
             .into(holder.weatherImage)
         holder.parent.setOnClickListener{ view: View ->
-            Log.d("Cache", myDataset[position].toString())
+            Log.d(TAG, myDataset[position].toString())
             Navigation.findNavController(view).navigate(ListFragmentDirections.actionListFragmentToForecastDetailsFragment(myDataset[position].id))}
     }
 

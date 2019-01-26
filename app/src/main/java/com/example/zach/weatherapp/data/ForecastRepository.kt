@@ -9,22 +9,28 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ForecastRepository @Inject constructor(private var service :OpenWeatherApi){
+class ForecastRepository @Inject constructor(private var service :OpenWeatherApi, private var weatherCache: WeatherCache){
 
 
     private val API_KEY = BuildConfig.OPEN_WEATHER_MAP_API_KEY
-    private var weatherCache = WeatherCache()
+
 
     companion object {
         private val TAG = "ForecastRepository"
     }
 
+    init {
+        Log.d(TAG,"new repo")
+    }
 
-
-    fun getDetailedWeatherInfo(): Single<OpenWeatherCycleDataResponse>? = weatherCache.getCachedCities()
 
     fun getCities(): Single<OpenWeatherCycleDataResponse> {
-        Log.d(TAG,"getting cities...")
+        val cache = weatherCache.getCachedCities()
+        if(cache!=null){
+            Log.d(TAG, "getting cities from cache")
+            return cache
+        }
+        Log.d(TAG,"getting cities from API")
         val response = service.getCities(API_KEY)
         weatherCache.put(response)
         return response
