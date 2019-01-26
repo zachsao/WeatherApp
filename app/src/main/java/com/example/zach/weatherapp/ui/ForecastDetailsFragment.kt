@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -51,6 +52,7 @@ class ForecastDetailsFragment : Fragment() {
         viewModel.getDetailedWeatherInfo(cityId).observe(this, Observer {weatherInfo: City? ->
             Log.d(TAG, weatherInfo.toString())
             if (weatherInfo != null) {
+                (activity as AppCompatActivity).supportActionBar?.title = weatherInfo.name
                 temperature_textview.text= "${weatherInfo.main.temp.toInt()}°C"
                 weather_description_textview.text = weatherInfo.weather[0].description
                 max_temperature_textview.text = "${weatherInfo.main.temp_max}°C"
