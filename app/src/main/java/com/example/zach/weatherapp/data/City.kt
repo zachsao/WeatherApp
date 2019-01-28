@@ -14,5 +14,5 @@ data class OpenWeatherCycleDataResponse(var list: List<City>)
 
 data class Weather(var id:Int, var main:String, var description:String, var icon:String)
 
-data class Wind(var speed: Double, var deg:Int)
+data class Wind(var speed: Double, var deg:Double)
 
