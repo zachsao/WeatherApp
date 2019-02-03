@@ -2,12 +2,10 @@ package com.example.zach.weatherapp
 
 import android.app.Activity
 import android.app.Application
-import android.os.Bundle
 import com.example.zach.weatherapp.utils.AppInjector
-import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
-import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class WeatherApp: Application(), HasActivityInjector {
@@ -16,8 +14,13 @@ class WeatherApp: Application(), HasActivityInjector {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
-        AppInjector.init(this)
         super.onCreate()
+
+        if(BuildConfig.DEBUG){
+            Timber.plant(Timber.DebugTree())
+            Timber.d("Timber tree planted !")
+        }
+        AppInjector.init(this)
 
     }
 

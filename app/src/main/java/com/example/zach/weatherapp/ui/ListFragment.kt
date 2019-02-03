@@ -1,7 +1,7 @@
 package com.example.zach.weatherapp.ui
 
 
-import android.content.Context
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,6 +19,7 @@ import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
 
 import kotlinx.android.synthetic.main.fragment_list.view.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -36,8 +37,6 @@ class ListFragment : Fragment(), Injectable {
 
     lateinit var viewModel: CityListViewModel
 
-    private val TAG = "ListFragment"
-
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
@@ -54,7 +53,7 @@ class ListFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
         viewModel.getCities().observe(this, Observer { cities ->
-            Log.d(TAG,cities.toString())
+            Timber.d("Observing cities : %s",cities.toString())
             viewAdapter = ForecastAdapter(cities)
             recyclerView.apply {
                 // use a linear layout manager

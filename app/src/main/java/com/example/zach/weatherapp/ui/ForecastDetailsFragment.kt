@@ -17,6 +17,7 @@ import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -29,8 +30,6 @@ class ForecastDetailsFragment : Fragment(), Injectable {
     lateinit var viewModel: ForecastViewModel
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-
-    private val TAG = "DetailsFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +49,7 @@ class ForecastDetailsFragment : Fragment(), Injectable {
 
     fun displayData(cityId: Int){
         viewModel.getDetailedWeatherInfo(cityId).observe(this, Observer {weatherInfo: City? ->
-            Log.d(TAG, weatherInfo.toString())
+            Timber.d("Displaying city : %s",weatherInfo?.name)
             if (weatherInfo != null) {
                 (activity as AppCompatActivity).supportActionBar?.title = weatherInfo.name
                 temperature_textview.text= "${weatherInfo.main.temp.toInt()}°C"

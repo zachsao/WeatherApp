@@ -1,6 +1,5 @@
 package com.example.zach.weatherapp.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.zach.weatherapp.data.City
@@ -11,6 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -18,9 +18,6 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
     private var cities : MutableLiveData<List<City>> = MutableLiveData()
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
-    companion object {
-        private val TAG = "CityListViewModel"
-    }
 
     fun getCities(): LiveData<List<City>> {
         disposable!!.add(forecastRepo.getCities().subscribeOn(Schedulers.io())
@@ -34,7 +31,7 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
                 }
 
                 override fun onError(e: Throwable) {
-                    Log.e(TAG, e.localizedMessage)
+                    Timber.e(e.localizedMessage)
                 }
             }))
         return cities

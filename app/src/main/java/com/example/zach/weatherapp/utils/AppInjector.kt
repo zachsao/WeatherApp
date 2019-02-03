@@ -12,6 +12,7 @@ import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import timber.log.Timber
 
 object AppInjector {
     fun init(weatherApp: WeatherApp) {
@@ -50,10 +51,10 @@ object AppInjector {
     }
 
     private fun handleActivity(activity: Activity) {
-        Log.d("AppInjector", "handling activity...")
+        Timber.d("handling activity...")
         if (activity is HasSupportFragmentInjector) {
             AndroidInjection.inject(activity)
-            Log.d("AppInjector", "MainActivity injected...")
+            Timber.d("MainActivity injected...")
         }
         if (activity is FragmentActivity) {
             activity.supportFragmentManager
@@ -64,8 +65,10 @@ object AppInjector {
                             f: Fragment,
                             savedInstanceState: Bundle?
                         ) {
-                            if(f is Injectable)
+                            if(f is Injectable){
                                 AndroidSupportInjection.inject(f)
+                                Timber.d("Fragment injected...")
+                            }
                         }
                     }, true
                 )

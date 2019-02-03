@@ -1,7 +1,6 @@
 package com.example.zach.weatherapp.Adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +14,11 @@ import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.ui.ListFragmentDirections
 import kotlinx.android.synthetic.main.city_list_item.view.*
+import timber.log.Timber
 
 class ForecastAdapter(var myDataset: List<City>) :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
-    companion object {
-        private val TAG = "ForecastAdapter"
-    }
     var context:Context?=null
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -62,7 +59,7 @@ class ForecastAdapter(var myDataset: List<City>) :
             .load("http://openweathermap.org/img/w/${myDataset[position].weather[0].icon}.png")
             .into(holder.weatherImage)
         holder.parent.setOnClickListener{ view: View ->
-            Log.d(TAG, myDataset[position].toString())
+            Timber.d("Clicked on city %s",myDataset[position].name)
             Navigation.findNavController(view).navigate(ListFragmentDirections.actionListFragmentToForecastDetailsFragment(myDataset[position].id))}
     }
 

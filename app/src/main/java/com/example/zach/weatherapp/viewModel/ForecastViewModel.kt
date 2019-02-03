@@ -12,15 +12,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository ):ViewModel() {
     private var forecast = MutableLiveData<City>()
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
-    companion object {
-        private val TAG = "ForecastViewModel"
-    }
     
     fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
         val cache = forecastRepo.getCities()
@@ -33,11 +31,10 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
                             cityId -> forecast.value = city
                         }
                     }
-                    Log.d(TAG, forecast.value.toString())
                 }
 
                 override fun onError(e: Throwable) {
-                    Log.e(TAG, e.localizedMessage)
+                    Timber.e(e.localizedMessage)
                 }
             }))
 
