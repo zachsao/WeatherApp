@@ -1,16 +1,27 @@
 package com.example.zach.weatherapp.utils.Components
 
+import android.app.Application
+import com.example.zach.weatherapp.MainActivity
+import com.example.zach.weatherapp.WeatherApp
 import com.example.zach.weatherapp.ui.ForecastDetailsFragment
 import com.example.zach.weatherapp.ui.ListFragment
 import com.example.zach.weatherapp.utils.Modules.AppModule
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component (modules = [AppModule::class])
+@Component (modules = [AppModule::class,AndroidInjectionModule::class])
 interface AppComponent {
 
-    fun inject(fragment: ListFragment)
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
 
-    fun inject(fragment: ForecastDetailsFragment)
+        fun build(): AppComponent
+    }
+
+    fun inject(app: WeatherApp)
 }

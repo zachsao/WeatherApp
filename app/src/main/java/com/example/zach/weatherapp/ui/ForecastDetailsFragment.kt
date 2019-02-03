@@ -35,8 +35,8 @@ class ForecastDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val component = DaggerAppComponent.create()
-        component.inject(this)
+        //val component = DaggerAppComponent.create()
+        //component.inject(this)
 
         val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
 
