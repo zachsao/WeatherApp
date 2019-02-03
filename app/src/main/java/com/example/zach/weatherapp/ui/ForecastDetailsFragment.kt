@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
+import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
 import com.example.zach.weatherapp.viewModel.ForecastViewModelFactory
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
@@ -24,10 +26,11 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  *
  */
-class ForecastDetailsFragment : Fragment() {
+class ForecastDetailsFragment : Fragment(), Injectable {
 
-    @Inject lateinit var viewModel: ForecastViewModel
-    @Inject lateinit var factory: ForecastViewModelFactory
+    lateinit var viewModel: ForecastViewModel
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
 
     private val TAG = "DetailsFragment"
 
@@ -35,8 +38,7 @@ class ForecastDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //val component = DaggerAppComponent.create()
-        //component.inject(this)
+
 
         val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
 
