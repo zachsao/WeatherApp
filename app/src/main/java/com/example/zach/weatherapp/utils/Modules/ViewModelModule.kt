@@ -3,10 +3,7 @@ package com.example.zach.weatherapp.utils.Modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.zach.weatherapp.utils.ViewModelKey
-import com.example.zach.weatherapp.viewModel.CityListViewModel
-import com.example.zach.weatherapp.viewModel.CityListViewModelFactory
-import com.example.zach.weatherapp.viewModel.ForecastViewModel
-import com.example.zach.weatherapp.viewModel.ForecastViewModelFactory
+import com.example.zach.weatherapp.viewModel.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
