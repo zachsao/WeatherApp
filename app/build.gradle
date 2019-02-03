@@ -60,8 +60,11 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
     //Dagger
     implementation 'com.google.dagger:dagger:2.21'
+    implementation 'com.google.dagger:dagger-android:2.21'
+    implementation 'com.google.dagger:dagger-android-support:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
     kapt 'com.google.dagger:dagger-compiler:2.21'
+    kapt 'com.google.dagger:dagger-android-processor:2.21'
 
     // RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
