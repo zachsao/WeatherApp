@@ -14,10 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
-import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
-import com.example.zach.weatherapp.viewModel.ForecastViewModelFactory
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
 import javax.inject.Inject
 
