@@ -1,7 +1,6 @@
 package com.example.zach.weatherapp.ui
 
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,15 +11,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.R
-import com.example.zach.weatherapp.utils.Components.DaggerAppComponent
 import com.example.zach.weatherapp.viewModel.CityListViewModel
-import com.example.zach.weatherapp.viewModel.CityListViewModelFactory
-import dagger.android.AndroidInjection
+
 import kotlinx.android.synthetic.main.fragment_list.view.*
 import javax.inject.Inject
 
@@ -36,12 +32,13 @@ class ListFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     //construct the ViewModelFactory and ViewModel with Dagger
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
 
     lateinit var viewModel: CityListViewModel
 
     private val TAG = "ListFragment"
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +49,6 @@ class ListFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_list, container, false)
         viewManager = LinearLayoutManager(activity)
         recyclerView = rootView.list
-
-        //val component = DaggerAppComponent.create()
-        //component.inject(this)
 
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
@@ -70,6 +64,5 @@ class ListFragment : Fragment() {
         })
         return rootView
     }
-
 
 }
