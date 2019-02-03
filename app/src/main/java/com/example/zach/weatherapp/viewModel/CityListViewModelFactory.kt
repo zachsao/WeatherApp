@@ -6,7 +6,7 @@ import com.example.zach.weatherapp.data.ForecastRepository
 import javax.inject.Inject
 
 class CityListViewModelFactory @Inject constructor(private val forecastRepository: ForecastRepository) :
-    ViewModelProvider.NewInstanceFactory(){
+    ViewModelProvider.Factory{
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

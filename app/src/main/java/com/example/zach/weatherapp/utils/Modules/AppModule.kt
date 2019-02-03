@@ -9,7 +9,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 
-@Module
+@Module(includes = [ViewModelModule::class])
 class AppModule {
 
     @Provides

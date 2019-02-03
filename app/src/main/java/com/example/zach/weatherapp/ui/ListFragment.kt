@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +36,10 @@ class ListFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     //construct the ViewModelFactory and ViewModel with Dagger
-    @Inject lateinit var factory: CityListViewModelFactory
-    @Inject lateinit var viewModel: CityListViewModel
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    lateinit var viewModel: CityListViewModel
 
     private val TAG = "ListFragment"
 

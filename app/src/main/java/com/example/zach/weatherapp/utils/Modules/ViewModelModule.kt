@@ -11,6 +11,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import javax.inject.Named
 
 @Module
 abstract class ViewModelModule {
@@ -25,8 +26,6 @@ abstract class ViewModelModule {
     abstract fun bindDetailsViewModel(repoViewModel: ForecastViewModel): ViewModel
 
     @Binds
-    abstract fun bindViewModelFactory(factory: CityListViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: WeatherViewModelFactory): ViewModelProvider.Factory
 
-    @Binds
-    abstract fun bindDetailsViewModelFactory(factory: ForecastViewModelFactory): ViewModelProvider.Factory
 }

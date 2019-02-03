@@ -16,8 +16,9 @@ class WeatherApp: Application(), HasActivityInjector {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
-        super.onCreate()
         AppInjector.init(this)
+        super.onCreate()
+
     }
 
     override fun activityInjector() = dispatchingAndroidInjector

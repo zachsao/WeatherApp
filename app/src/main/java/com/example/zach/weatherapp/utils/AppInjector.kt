@@ -50,6 +50,7 @@ object AppInjector {
     }
 
     private fun handleActivity(activity: Activity) {
+        Log.d("AppInjector", "handling activity...")
         if (activity is HasSupportFragmentInjector) {
             AndroidInjection.inject(activity)
             Log.d("AppInjector", "MainActivity injected...")
