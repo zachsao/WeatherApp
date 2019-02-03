@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.R
+import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
 
 import kotlinx.android.synthetic.main.fragment_list.view.*
@@ -25,7 +26,7 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  *
  */
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), Injectable {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
