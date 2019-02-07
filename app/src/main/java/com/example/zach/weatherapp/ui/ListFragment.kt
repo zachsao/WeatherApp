@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -46,9 +47,9 @@ class ListFragment : Fragment(), Injectable {
     ): View? {
 
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_list, container, false)
+        val binding = DataBindingUtil.inflate<com.example.zach.weatherapp.databinding.FragmentListBinding>(inflater,R.layout.fragment_list, container, false)
         viewManager = LinearLayoutManager(activity)
-        recyclerView = rootView.list
+        recyclerView = binding.list
 
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
@@ -62,7 +63,7 @@ class ListFragment : Fragment(), Injectable {
                 adapter = viewAdapter
             }
         })
-        return rootView
+        return binding.root
     }
 
 }
