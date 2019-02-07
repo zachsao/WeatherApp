@@ -25,3 +25,13 @@ git clone https://github.com/zachsao/WeatherApp.git
 Or Download and extract the zip file.
 
 Open Project in Android Studio and click Run.
+
+### Libraries
+
+RxJava
+Retrofit for networking
+Dagger 2 for Dependency Injection
+Data Binding Android Library
+Timber for logging
+Moshi for parsing JSON
+Glide for image display
