@@ -29,9 +29,15 @@ Open Project in Android Studio and click Run.
 ### Libraries
 
 RxJava
+
 Retrofit for networking
+
 Dagger 2 for Dependency Injection
+
 Data Binding Android Library
+
 Timber for logging
+
 Moshi for parsing JSON
+
 Glide for image display
