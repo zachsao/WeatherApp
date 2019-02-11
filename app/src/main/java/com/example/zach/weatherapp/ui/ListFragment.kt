@@ -2,14 +2,19 @@ package com.example.zach.weatherapp.ui
 
 
 
+import android.content.Context
+import android.content.res.Resources
 import android.location.LocationManager
 import android.location.LocationProvider
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -59,16 +64,24 @@ class ListFragment : Fragment(), Injectable {
         val latitude = coordinates[0]
         val longitude = coordinates[1]
 
-        viewModel.getCities(latitude,longitude).observe(this, Observer { cities ->
-            Timber.d("Observing cities : %s",cities.toString())
-            viewAdapter = ForecastAdapter(cities)
-            recyclerView.apply {
-                // use a linear layout manager
-                layoutManager = viewManager
-                // specify a viewAdapter
-                adapter = viewAdapter
-            }
-        })
+        if(isOnline()) {
+            binding.emptyStateTextView.visibility = View.GONE
+            binding.listFragment.visibility = View.VISIBLE
+            
+            viewModel.getCities(latitude, longitude).observe(this, Observer { cities ->
+                Timber.d("Observing cities : %s", cities.toString())
+                viewAdapter = ForecastAdapter(cities)
+                recyclerView.apply {
+                    // use a linear layout manager
+                    layoutManager = viewManager
+                    // specify a viewAdapter
+                    adapter = viewAdapter
+                }
+            })
+        }else{
+            binding.emptyStateTextView.visibility = View.VISIBLE
+            binding.listFragment.visibility = View.GONE
+        }
         return binding.root
     }
 
@@ -76,5 +89,12 @@ class ListFragment : Fragment(), Injectable {
         val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
         return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences?.getString("lon","2.3488")!!.toDouble())
     }
+
+    fun isOnline(): Boolean {
+        val connMgr = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
+        return networkInfo?.isConnected == true
+    }
+
 
 }
