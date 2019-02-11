@@ -87,7 +87,7 @@ class ListFragment : Fragment(), Injectable {
 
     fun getLocation(): List<Double>{
         val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
-        Timber.d(sharedPreferences?.getString("lat","48.85341"))
+
         return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lon","2.3488")!!.toDouble())
     }
 
