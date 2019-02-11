@@ -13,7 +13,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.zach.weatherapp"
-        minSdkVersion 28
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -76,5 +76,8 @@ dependencies {
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //User Location
+    implementation "com.google.android.gms:play-services-location:16.0.0"
 
 }

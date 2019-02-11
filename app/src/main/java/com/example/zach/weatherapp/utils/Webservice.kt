@@ -8,6 +8,8 @@ import retrofit2.http.Query
 
 interface OpenWeatherApi {
 
-    @GET("/data/2.5/find?lat=55.5&lon=37.5&cnt=5&units=metric")
-    fun getCities(@Query("appid") app_id:String): Single<OpenWeatherCycleDataResponse>
+    @GET("/data/2.5/find?cnt=5&units=metric")
+    fun getCities(@Query("lat") latitude:Double,
+                  @Query("lon") longitude:Double,
+                  @Query("appid") app_id:String): Single<OpenWeatherCycleDataResponse>
 }

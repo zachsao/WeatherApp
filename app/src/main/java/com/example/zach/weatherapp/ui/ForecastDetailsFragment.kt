@@ -52,7 +52,12 @@ class ForecastDetailsFragment : Fragment(), Injectable {
     }
 
     fun displayData(cityId: Int){
-        viewModel.getDetailedWeatherInfo(cityId).observe(this, Observer {weatherInfo: City? ->
+
+        val coordinates = getLocation()
+        val latitude = coordinates[0]
+        val longitude = coordinates[1]
+
+        viewModel.getDetailedWeatherInfo(cityId,latitude,longitude).observe(this, Observer {weatherInfo: City? ->
             Timber.d("Displaying city : %s",weatherInfo?.name)
             if (weatherInfo != null) {
                 binding.city = weatherInfo
@@ -63,6 +68,12 @@ class ForecastDetailsFragment : Fragment(), Injectable {
             }
 
         })
+    }
+
+    fun getLocation(): List<Double>{
+        val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
+
+        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences?.getString("lon","2.3488")!!.toDouble())
     }
 
 

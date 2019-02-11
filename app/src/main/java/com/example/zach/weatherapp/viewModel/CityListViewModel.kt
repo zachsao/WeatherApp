@@ -19,8 +19,8 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
 
-    fun getCities(): LiveData<List<City>> {
-        disposable!!.add(forecastRepo.getCities().subscribeOn(Schedulers.io())
+    fun getCities(lat: Double,lon:Double): LiveData<List<City>> {
+        disposable!!.add(forecastRepo.getCities(lat,lon).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
                 override fun onSuccess(t: OpenWeatherCycleDataResponse) {

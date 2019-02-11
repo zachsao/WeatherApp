@@ -2,6 +2,8 @@ package com.example.zach.weatherapp.ui
 
 
 
+import android.location.LocationManager
+import android.location.LocationProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -53,7 +55,11 @@ class ListFragment : Fragment(), Injectable {
 
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
-        viewModel.getCities().observe(this, Observer { cities ->
+        val coordinates = getLocation()
+        val latitude = coordinates[0]
+        val longitude = coordinates[1]
+
+        viewModel.getCities(latitude,longitude).observe(this, Observer { cities ->
             Timber.d("Observing cities : %s",cities.toString())
             viewAdapter = ForecastAdapter(cities)
             recyclerView.apply {
@@ -64,6 +70,11 @@ class ListFragment : Fragment(), Injectable {
             }
         })
         return binding.root
+    }
+
+    fun getLocation(): List<Double>{
+        val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
+        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences?.getString("lon","2.3488")!!.toDouble())
     }
 
 }

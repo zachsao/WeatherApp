@@ -20,8 +20,8 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
     
-    fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
-        val cache = forecastRepo.getCities()
+    fun getDetailedWeatherInfo(cityId: Int,latitude:Double,longitude:Double): LiveData<City> {
+        val cache = forecastRepo.getCities(latitude,longitude)
         disposable!!.add(cache.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
@@ -45,4 +45,6 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
         super.onCleared()
         disposable?.clear()
     }
+
+
 }
