@@ -27,9 +27,9 @@ android {
         }
     }
 
-    buildTypes.each{ it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', OpenWeatherApiKey}
+    buildTypes.each { it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', OpenWeatherApiKey }
 
-    dataBinding{
+    dataBinding {
         enabled = true
     }
 }
