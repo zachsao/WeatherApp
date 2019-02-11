@@ -21,8 +21,14 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
 
     
     fun getDetailedWeatherInfo(cityId: Int,latitude:Double,longitude:Double): LiveData<City> {
-        val cache = forecastRepo.getCities(latitude,longitude)
-        disposable!!.add(cache.subscribeOn(Schedulers.io())
+        //val cache = forecastRepo.getCities(latitude,longitude)
+        val cache = forecastRepo.getCache().getCitiesFromCache()
+        cache?.forEach { city ->
+            when (city.id) {
+                cityId -> forecast.value = city
+            }
+        }
+        /*disposable!!.add(cache.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
                 override fun onSuccess(t: OpenWeatherCycleDataResponse) {
@@ -32,11 +38,10 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
                         }
                     }
                 }
-
                 override fun onError(e: Throwable) {
                     Timber.e(e.localizedMessage)
                 }
-            }))
+            }))*/
 
         return forecast
     }

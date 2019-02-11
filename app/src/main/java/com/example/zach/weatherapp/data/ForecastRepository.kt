@@ -15,6 +15,7 @@ class ForecastRepository @Inject constructor(private var service :OpenWeatherApi
     private val API_KEY = BuildConfig.OPEN_WEATHER_MAP_API_KEY
 
 
+
     init {
         Timber.d("Repository initialized")
     }
@@ -31,6 +32,12 @@ class ForecastRepository @Inject constructor(private var service :OpenWeatherApi
         weatherCache.put(response)
         return response
     }
+
+    fun getCache(): WeatherCache{
+        return  weatherCache
+    }
+
+
 
 
 }

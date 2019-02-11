@@ -67,7 +67,7 @@ class ListFragment : Fragment(), Injectable {
         if(isOnline()) {
             binding.emptyStateTextView.visibility = View.GONE
             binding.listFragment.visibility = View.VISIBLE
-            
+
             viewModel.getCities(latitude, longitude).observe(this, Observer { cities ->
                 Timber.d("Observing cities : %s", cities.toString())
                 viewAdapter = ForecastAdapter(cities)
@@ -87,7 +87,8 @@ class ListFragment : Fragment(), Injectable {
 
     fun getLocation(): List<Double>{
         val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
-        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences?.getString("lon","2.3488")!!.toDouble())
+        Timber.d(sharedPreferences?.getString("lat","48.85341"))
+        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lon","2.3488")!!.toDouble())
     }
 
     fun isOnline(): Boolean {

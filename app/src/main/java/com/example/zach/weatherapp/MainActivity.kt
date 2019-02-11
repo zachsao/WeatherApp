@@ -56,13 +56,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .addOnSuccessListener(this) { location ->
                 val latitude = location.latitude
                 val longitude = location.longitude
-                Timber.d("Device location : ${latitude}, ${longitude}")
+
+                Timber.d("Device location : $latitude, $longitude")
+
                 val sharedPreferences = getSharedPreferences("My prefs", 0)
                 val editor = sharedPreferences.edit()
 
                 editor.putString("lat",latitude.toString())
                 editor.putString("lng", longitude.toString())
-
                 editor.apply()
             }
     }

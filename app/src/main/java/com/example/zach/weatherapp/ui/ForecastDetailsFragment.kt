@@ -1,6 +1,9 @@
 package com.example.zach.weatherapp.ui
 
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.databinding.FragmentForecastDetailsBinding
+import com.example.zach.weatherapp.utils.GlideApp
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.ForecastViewModel
 import kotlinx.android.synthetic.main.fragment_forecast_details.*
@@ -57,14 +61,20 @@ class ForecastDetailsFragment : Fragment(), Injectable {
         val latitude = coordinates[0]
         val longitude = coordinates[1]
 
-        viewModel.getDetailedWeatherInfo(cityId,latitude,longitude).observe(this, Observer {weatherInfo: City? ->
+        viewModel.getDetailedWeatherInfo(cityId,latitude,longitude).observe(this, Observer {
+                weatherInfo: City? ->
             Timber.d("Displaying city : %s",weatherInfo?.name)
             if (weatherInfo != null) {
                 binding.city = weatherInfo
                 (activity as AppCompatActivity).supportActionBar?.title = weatherInfo.name
-                Glide.with(activity)
-                    .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
-                    .into(imageView)
+
+                if(isOnline()){
+                    GlideApp.with(activity as AppCompatActivity)
+                        .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
+                        .error(R.drawable.sunny)
+                        .into(imageView)
+                }
+
             }
 
         })
@@ -72,8 +82,13 @@ class ForecastDetailsFragment : Fragment(), Injectable {
 
     fun getLocation(): List<Double>{
         val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
+        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lon","2.3488")!!.toDouble())
+    }
 
-        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences?.getString("lon","2.3488")!!.toDouble())
+    fun isOnline(): Boolean {
+        val connMgr = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
+        return networkInfo?.isConnected == true
     }
 
 
