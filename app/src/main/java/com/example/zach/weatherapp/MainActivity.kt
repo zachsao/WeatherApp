@@ -2,6 +2,9 @@ package com.example.zach.weatherapp
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.SearchManager
+import android.content.Context
+import android.content.IntentSender
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -14,11 +17,15 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 import android.content.pm.PackageManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.widget.SearchView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import timber.log.Timber
 
 
@@ -40,32 +47,71 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         setupActionBarWithNavController(navController)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = FusedLocationProviderClient(this)
 
         if(!hasLocationPermission())
             requestLocationPermission()
         else{
-            getLastLocation()
-            Timber.d("getting last location...")
+            //getLastLocation()
+            createLocationRequest()
         }
 
     }
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
+        Timber.d("getting last location...")
+        val sharedPreferences = getSharedPreferences("My prefs", 0)
+        val editor = sharedPreferences.edit()
         fusedLocationClient.lastLocation
-            .addOnSuccessListener(this) { location ->
+            .addOnSuccessListener { location ->
                 val latitude = location.latitude
                 val longitude = location.longitude
 
                 Timber.d("Device location : $latitude, $longitude")
 
-                val sharedPreferences = getSharedPreferences("My prefs", 0)
-                val editor = sharedPreferences.edit()
-
                 editor.putString("lat",latitude.toString())
                 editor.putString("lng", longitude.toString())
                 editor.apply()
             }
+            .addOnFailureListener { exception ->
+                Timber.e("Device location failure: ${exception.message}")
+            }
+    }
+
+    private val REQUEST_CHECK_SETTINGS = 2
+
+    fun createLocationRequest() {
+        val locationRequest = LocationRequest.create()?.apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest!!)
+
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener { locationSettingsResponse ->
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+            getLastLocation()
+        }
+
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException){
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    exception.startResolutionForResult(this,
+                        REQUEST_CHECK_SETTINGS)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+            }
+        }
     }
 
     private fun hasLocationPermission(): Boolean {
@@ -111,5 +157,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector() = fragmentInjector
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
 
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu!!.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        }
+
+        return true
+    }
 }
