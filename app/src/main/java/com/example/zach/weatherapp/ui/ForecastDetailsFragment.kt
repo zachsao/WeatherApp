@@ -52,8 +52,6 @@ class ForecastDetailsFragment : Fragment(), Injectable {
 
         displayData(cityID)
 
-        setHasOptionsMenu(true)
-
         return binding.root
     }
 
@@ -91,17 +89,6 @@ class ForecastDetailsFragment : Fragment(), Injectable {
         val connMgr = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         return networkInfo?.isConnected == true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu,menu)
-
-        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
-
-        }
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
 }
