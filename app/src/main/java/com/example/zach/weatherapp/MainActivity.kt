@@ -2,8 +2,6 @@ package com.example.zach.weatherapp
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.SearchManager
-import android.content.Context
 import android.content.IntentSender
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +15,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 import android.content.pm.PackageManager
-import android.view.Menu
-import android.view.MenuInflater
-import android.widget.SearchView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.ContextCompat
@@ -158,15 +153,4 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector() = fragmentInjector
 
-    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu!!.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-
-        }
-
-        return true
-    }*/
 }

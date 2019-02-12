@@ -5,33 +5,22 @@ package com.example.zach.weatherapp.ui
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
-import android.content.res.Resources
-import android.location.LocationManager
-import android.location.LocationProvider
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
-import com.example.zach.weatherapp.MainActivity
 import com.example.zach.weatherapp.R
-import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
-
-import kotlinx.android.synthetic.main.fragment_list.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,8 +34,6 @@ class ListFragment : Fragment(), Injectable {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-
-    //construct the ViewModelFactory and ViewModel with Dagger
 
     lateinit var viewModel: CityListViewModel
 
@@ -69,7 +56,7 @@ class ListFragment : Fragment(), Injectable {
         val coordinates = getLocation()
         val latitude = coordinates[0]
         val longitude = coordinates[1]
-        
+
 
         if(isOnline()) {
             binding.emptyStateTextView.visibility = View.GONE
