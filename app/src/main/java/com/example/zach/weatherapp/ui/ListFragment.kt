@@ -69,6 +69,7 @@ class ListFragment : Fragment(), Injectable {
         val coordinates = getLocation()
         val latitude = coordinates[0]
         val longitude = coordinates[1]
+        
 
         if(isOnline()) {
             binding.emptyStateTextView.visibility = View.GONE
@@ -95,7 +96,7 @@ class ListFragment : Fragment(), Injectable {
 
     fun getLocation(): List<Double>{
         val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
-        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lon","2.3488")!!.toDouble())
+        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lng","2.3488")!!.toDouble())
     }
 
     fun isOnline(): Boolean {

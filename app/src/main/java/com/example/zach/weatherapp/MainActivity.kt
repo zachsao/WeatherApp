@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         else{
             //getLastLocation()
             createLocationRequest()
+
         }
 
     }
@@ -69,8 +70,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
                 Timber.d("Device location : $latitude, $longitude")
 
-                editor.putString("lat",latitude.toString())
-                editor.putString("lng", longitude.toString())
+                editor.putString("lat","$latitude")
+                editor.putString("lng", "$longitude")
                 editor.apply()
             }
             .addOnFailureListener { exception ->
