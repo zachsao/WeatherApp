@@ -38,6 +38,23 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
         return cities
     }
 
+    fun getCityByName(cityName: String): LiveData<City>{
+        val searchedCity = MutableLiveData<City>()
+        disposable!!.add(forecastRepo.getCityByName(cityName).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object: DisposableSingleObserver<City>(){
+                override fun onSuccess(t: City) {
+
+                    searchedCity.value = t
+                }
+
+                override fun onError(e: Throwable) {
+                    Timber.e(e.localizedMessage)
+                }
+            }))
+        return searchedCity
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable?.clear()
