@@ -33,6 +33,10 @@ class ForecastRepository @Inject constructor(private var service :OpenWeatherApi
         return response
     }
 
+    fun getCityByName(cityName: String): Single<City>{
+        return service.getCityByName(cityName,API_KEY)
+    }
+
     fun getCache(): WeatherCache{
         return  weatherCache
     }

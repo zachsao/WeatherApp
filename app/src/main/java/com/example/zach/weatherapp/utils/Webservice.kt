@@ -1,6 +1,7 @@
 package com.example.zach.weatherapp.utils
 
 
+import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -14,5 +15,6 @@ interface OpenWeatherApi {
                   @Query("appid") app_id:String): Single<OpenWeatherCycleDataResponse>
 
     @GET("/data/2.5/weather?")
-    fun getCityByName(@Query("q") name: String): Single<OpenWeatherCycleDataResponse>
+    fun getCityByName(@Query("q") name: String,
+                      @Query("appid") app_id:String): Single<City>
 }
