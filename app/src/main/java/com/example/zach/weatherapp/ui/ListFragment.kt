@@ -20,11 +20,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.MainActivity
 import com.example.zach.weatherapp.R
+import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
 
@@ -107,7 +110,26 @@ class ListFragment : Fragment(), Injectable {
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return true
+                }
 
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.getCityByName(query!!).observe(this@ListFragment, Observer { city ->
+                        viewAdapter = ForecastAdapter(listOf(city))
+                        recyclerView.apply {
+                            // use a linear layout manager
+                            layoutManager = viewManager
+                            // specify a viewAdapter
+                            adapter = viewAdapter
+                        }
+                    })
+
+                    return false
+                }
+
+            })
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

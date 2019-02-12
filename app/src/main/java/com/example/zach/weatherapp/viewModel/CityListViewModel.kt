@@ -46,6 +46,7 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
                 override fun onSuccess(t: City) {
 
                     searchedCity.value = t
+                    forecastRepo.getCache().saveCities(listOf(t))
                 }
 
                 override fun onError(e: Throwable) {

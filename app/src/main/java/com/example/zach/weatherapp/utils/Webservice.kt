@@ -14,7 +14,7 @@ interface OpenWeatherApi {
                   @Query("lon") longitude:Double,
                   @Query("appid") app_id:String): Single<OpenWeatherCycleDataResponse>
 
-    @GET("/data/2.5/weather?")
+    @GET("/data/2.5/weather?units=metric")
     fun getCityByName(@Query("q") name: String,
                       @Query("appid") app_id:String): Single<City>
 }

@@ -20,7 +20,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
     private var disposable : CompositeDisposable? = CompositeDisposable()
 
     
-    fun getDetailedWeatherInfo(cityId: Int,latitude:Double,longitude:Double): LiveData<City> {
+    fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
         //val cache = forecastRepo.getCities(latitude,longitude)
         val cache = forecastRepo.getCache().getCitiesFromCache()
         cache?.forEach { city ->
