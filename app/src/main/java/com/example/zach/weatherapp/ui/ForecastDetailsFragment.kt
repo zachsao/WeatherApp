@@ -1,16 +1,16 @@
 package com.example.zach.weatherapp.ui
 
 
+import android.app.SearchManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +52,8 @@ class ForecastDetailsFragment : Fragment(), Injectable {
 
         displayData(cityID)
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -91,5 +93,15 @@ class ForecastDetailsFragment : Fragment(), Injectable {
         return networkInfo?.isConnected == true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu,menu)
+
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
 }

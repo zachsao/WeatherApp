@@ -2,6 +2,7 @@ package com.example.zach.weatherapp.ui
 
 
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.res.Resources
@@ -49,6 +50,7 @@ class ListFragment : Fragment(), Injectable {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,6 +85,8 @@ class ListFragment : Fragment(), Injectable {
             binding.emptyStateTextView.visibility = View.VISIBLE
             binding.listFragment.visibility = View.GONE
         }
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -97,5 +101,14 @@ class ListFragment : Fragment(), Injectable {
         return networkInfo?.isConnected == true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu,menu)
 
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 }
