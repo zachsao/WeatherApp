@@ -27,8 +27,8 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
         fun bind(weeklyForecast: WeeklyForecast){
             binding.dayTextView.text = weeklyForecast.dt_txt
             binding.forecastIcon.setImageResource(R.drawable.sunny)
-            binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max}"
-            binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min}"
+            binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max.toInt()}°"
+            binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min.toInt()}°"
 
             GlideApp.with(binding.root.context)
                 .load("http://openweathermap.org/img/w/${weeklyForecast.weather[0].icon}.png")
