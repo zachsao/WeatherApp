@@ -12,8 +12,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.zach.weatherapp.Adapter.CityAdapter
+import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
+import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.FragmentForecastDetailsBinding
 import com.example.zach.weatherapp.utils.GlideApp
 import com.example.zach.weatherapp.utils.Injectable
@@ -34,12 +39,20 @@ class ForecastDetailsFragment : Fragment(), Injectable {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var binding: FragmentForecastDetailsBinding
 
+    //weekly forecast
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_forecast_details, container, false)
+
+        viewManager = LinearLayoutManager(activity)
+        recyclerView = binding.forecastRecyclerView
 
         val cityID = ForecastDetailsFragmentArgs.fromBundle(arguments!!).cityId
 
@@ -70,6 +83,16 @@ class ForecastDetailsFragment : Fragment(), Injectable {
             }
 
         })
+
+        //dummy data for weekly forecast
+        val weeklyForecast = WeeklyForecast()
+        viewAdapter = ForecastAdapter(weeklyForecast)
+        recyclerView.apply {
+            // use a linear layout manager
+            layoutManager = viewManager
+            // specify a viewAdapter
+            adapter = viewAdapter
+        }
     }
 
     fun isOnline(): Boolean {
