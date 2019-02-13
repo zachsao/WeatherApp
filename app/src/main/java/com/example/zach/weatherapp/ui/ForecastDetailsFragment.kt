@@ -18,6 +18,8 @@ import com.example.zach.weatherapp.Adapter.CityAdapter
 import com.example.zach.weatherapp.Adapter.ForecastAdapter
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
+import com.example.zach.weatherapp.data.Forecast
+import com.example.zach.weatherapp.data.Weather
 import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.FragmentForecastDetailsBinding
 import com.example.zach.weatherapp.utils.GlideApp
@@ -85,7 +87,12 @@ class ForecastDetailsFragment : Fragment(), Injectable {
         })
 
         //dummy data for weekly forecast
-        val weeklyForecast = WeeklyForecast()
+        val weeklyForecast = listOf(WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
+            listOf(Weather(0,"sunny","big sun","")),"Demain"),
+            WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
+                listOf(Weather(0,"sunny","big sun","")),"Jeu 14 Fév."),
+            WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
+                listOf(Weather(0,"sunny","big sun","")),"Ven 15 Fév."))
         viewAdapter = ForecastAdapter(weeklyForecast)
         recyclerView.apply {
             // use a linear layout manager
