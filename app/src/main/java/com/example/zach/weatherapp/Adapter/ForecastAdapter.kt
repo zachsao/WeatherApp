@@ -24,7 +24,7 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
 
     inner class ForecastViewHolder(var binding: ForecastItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(weeklyForecast: WeeklyForecast){
-            binding.dayTextView.text = weeklyForecast.date
+            binding.dayTextView.text = weeklyForecast.dt_txt
             binding.forecastIcon.setImageResource(R.drawable.sunny)
             binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max}"
             binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min}"

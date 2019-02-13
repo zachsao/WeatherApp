@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.data.ForecastRepository
+import com.example.zach.weatherapp.data.WeekForecastResponse
 import com.example.zach.weatherapp.data.WeeklyForecast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -35,9 +36,9 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
     fun getWeekForecast(cityId: Int): LiveData<List<WeeklyForecast>>{
         disposable!!.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object: DisposableSingleObserver<List<WeeklyForecast>>(){
-                override fun onSuccess(t: List<WeeklyForecast>) {
-                    weeklyForecast.value = t
+            .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
+                override fun onSuccess(t: WeekForecastResponse) {
+                    weeklyForecast.value = t.list
                 }
                 override fun onError(e: Throwable) {
                     Timber.e(e.localizedMessage)

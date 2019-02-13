@@ -37,7 +37,7 @@ class ForecastRepository @Inject constructor(private var service :OpenWeatherApi
         return service.getCityByName(cityName,API_KEY)
     }
 
-    fun get5DayForecast(cityId: Int): Single<List<WeeklyForecast>>{
+    fun get5DayForecast(cityId: Int): Single<WeekForecastResponse>{
         val response = service.get5DayForecast(cityId, API_KEY)
         return response
     }

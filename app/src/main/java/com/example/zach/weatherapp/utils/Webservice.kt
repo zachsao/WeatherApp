@@ -3,6 +3,7 @@ package com.example.zach.weatherapp.utils
 
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
+import com.example.zach.weatherapp.data.WeekForecastResponse
 import com.example.zach.weatherapp.data.WeeklyForecast
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -21,5 +22,5 @@ interface OpenWeatherApi {
 
     @GET("/data/2.5/forecast?&units=metric")
     fun get5DayForecast(@Query("id") cityId: Int,
-                        @Query("appid") app_id: String): Single<List<WeeklyForecast>>
+                        @Query("appid") app_id: String): Single<WeekForecastResponse>
 }
