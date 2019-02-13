@@ -97,14 +97,6 @@ class ForecastDetailsFragment : Fragment(), Injectable {
             }
         })
 
-        //dummy data for weekly forecast
-        val weeklyForecast = listOf(WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
-            listOf(Weather(0,"sunny","big sun","")),"Mer 13 Fév."),
-            WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
-                listOf(Weather(0,"sunny","big sun","")),"Jeu 14 Fév."),
-            WeeklyForecast(Forecast(12.0,2134.0,23,12.0,15.0),
-                listOf(Weather(0,"sunny","big sun","")),"Ven 15 Fév."))
-
     }
 
     fun isOnline(): Boolean {
