@@ -78,7 +78,7 @@ class ForecastDetailsFragment : Fragment(), Injectable {
                 if(isOnline()){
                     GlideApp.with(activity as AppCompatActivity)
                         .load("http://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png")
-                        .error(R.drawable.sunny)
+                        .error(R.drawable.ic_error)
                         .into(imageView)
                 }
 

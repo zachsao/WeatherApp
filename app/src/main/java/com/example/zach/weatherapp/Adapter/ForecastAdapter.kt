@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.ForecastItemBinding
+import com.example.zach.weatherapp.utils.GlideApp
 
 class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
@@ -28,6 +29,11 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
             binding.forecastIcon.setImageResource(R.drawable.sunny)
             binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max}"
             binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min}"
+
+            GlideApp.with(binding.root.context)
+                .load("http://openweathermap.org/img/w/${weeklyForecast.weather[0].icon}.png")
+                .error(R.drawable.ic_error)
+                .into(binding.forecastIcon)
         }
     }
 }
