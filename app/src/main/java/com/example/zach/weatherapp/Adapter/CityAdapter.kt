@@ -4,24 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.zach.weatherapp.BR
-import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.databinding.CityListItemBinding
 import com.example.zach.weatherapp.ui.ListFragmentDirections
-import kotlinx.android.synthetic.main.city_list_item.view.*
 import timber.log.Timber
 
-class ForecastAdapter(var myDataset: List<City>) :
-    RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
+class CityAdapter(var myDataset: List<City>) :
+    RecyclerView.Adapter<CityAdapter.ForecastViewHolder>() {
 
     var context:Context?=null
 
@@ -48,7 +40,7 @@ class ForecastAdapter(var myDataset: List<City>) :
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): ForecastAdapter.ForecastViewHolder {
+                                    viewType: Int): CityAdapter.ForecastViewHolder {
         context = parent.context
         val inflater = LayoutInflater.from(context)
 

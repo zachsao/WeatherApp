@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zach.weatherapp.Adapter.ForecastAdapter
+import com.example.zach.weatherapp.Adapter.CityAdapter
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
@@ -64,7 +64,7 @@ class ListFragment : Fragment(), Injectable {
 
             viewModel.getCities(latitude, longitude).observe(this, Observer { cities ->
                 Timber.d("Observing cities : %s", cities.toString())
-                viewAdapter = ForecastAdapter(cities)
+                viewAdapter = CityAdapter(cities)
                 recyclerView.apply {
                     // use a linear layout manager
                     layoutManager = viewManager
@@ -105,7 +105,7 @@ class ListFragment : Fragment(), Injectable {
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     viewModel.getCityByName(query!!).observe(this@ListFragment, Observer { city ->
-                        viewAdapter = ForecastAdapter(listOf(city))
+                        viewAdapter = CityAdapter(listOf(city))
                         recyclerView.apply {
                             // use a linear layout manager
                             layoutManager = viewManager
