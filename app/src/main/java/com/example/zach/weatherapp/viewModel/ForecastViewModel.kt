@@ -38,7 +38,18 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
                 override fun onSuccess(t: WeekForecastResponse) {
-                    weeklyForecast.value = t.list
+                    //filter the result list with the 3pm forecast to get overall max temperature
+                    val three_pm_forecast_list = t.list.filter { it.dt_txt.contains("15:00") }
+                    //filter the result list with the 6am forecast to get overall min temperature
+                    val six_am_forecast_list = t.list.filter { it.dt_txt.contains("06:00")}
+                    //store the 6am min_temp values in the 3pm min_temp properties
+                    for(i in six_am_forecast_list.indices){
+                        three_pm_forecast_list[i].main.temp_min = six_am_forecast_list[i].main.temp_min
+                    }
+                    //set the liveData value to the updated 3pm list
+                    weeklyForecast.value = three_pm_forecast_list
+
+
                 }
                 override fun onError(e: Throwable) {
                     Timber.e(e.localizedMessage)
@@ -51,6 +62,4 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
         super.onCleared()
         disposable?.clear()
     }
-
-
 }
