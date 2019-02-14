@@ -7,6 +7,8 @@ import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.ForecastItemBinding
 import com.example.zach.weatherapp.utils.GlideApp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
@@ -25,8 +27,7 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
 
     inner class ForecastViewHolder(var binding: ForecastItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(weeklyForecast: WeeklyForecast){
-            binding.dayTextView.text = weeklyForecast.dt_txt
-            binding.forecastIcon.setImageResource(R.drawable.sunny)
+            binding.dayTextView.text = parseDate(weeklyForecast.dt_txt)
             binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max.toInt()}°"
             binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min.toInt()}°"
 
@@ -34,6 +35,13 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
                 .load("http://openweathermap.org/img/w/${weeklyForecast.weather[0].icon}.png")
                 .error(R.drawable.ic_error)
                 .into(binding.forecastIcon)
+        }
+
+        private fun parseDate(dt_txt:String):String{
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH)
+            val dateFormat2 = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
+            val date = dateFormat.parse(dt_txt)
+            return dateFormat2.format(date)
         }
     }
 }
