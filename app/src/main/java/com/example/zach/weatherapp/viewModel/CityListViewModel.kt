@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 
 class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRepository):ViewModel() {
-    private var cities : MutableLiveData<List<City>> = MutableLiveData()
-    private var disposable : CompositeDisposable? = CompositeDisposable()
+    @Inject lateinit var cities : MutableLiveData<List<City>>
+    @Inject lateinit var disposable : CompositeDisposable
 
 
     fun getCities(lat: Double,lon:Double): LiveData<List<City>> {
-        disposable!!.add(forecastRepo.getCities(lat,lon).subscribeOn(Schedulers.io())
+        disposable.add(forecastRepo.getCities(lat,lon).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
                 override fun onSuccess(t: OpenWeatherCycleDataResponse) {
@@ -40,7 +40,7 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
 
     fun getCityByName(cityName: String): LiveData<City>{
         val searchedCity = MutableLiveData<City>()
-        disposable!!.add(forecastRepo.getCityByName(cityName).subscribeOn(Schedulers.io())
+        disposable.add(forecastRepo.getCityByName(cityName).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<City>(){
                 override fun onSuccess(t: City) {
@@ -58,6 +58,6 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
 
     override fun onCleared() {
         super.onCleared()
-        disposable?.clear()
+        disposable.clear()
     }
 }

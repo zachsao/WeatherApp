@@ -1,8 +1,11 @@
 package com.example.zach.weatherapp.utils.Modules
 
+import androidx.lifecycle.MutableLiveData
+import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.utils.OpenWeatherApi
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -21,4 +24,13 @@ class AppModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build().create(OpenWeatherApi::class.java)
     }
+
+    @Provides
+    fun provideDisposable() = CompositeDisposable()
+
+    @Provides
+    fun provideForecastLiveData() = MutableLiveData<City>()
+
+    @Provides
+    fun provideCitiesLiveData() = MutableLiveData<List<City>>()
 }

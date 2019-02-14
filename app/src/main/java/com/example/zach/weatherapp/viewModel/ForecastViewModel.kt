@@ -16,8 +16,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository ):ViewModel() {
-    private var forecast = MutableLiveData<City>()
-    private var disposable : CompositeDisposable? = CompositeDisposable()
+    @Inject lateinit var forecast : MutableLiveData<City>
+
+    @Inject lateinit var disposable : CompositeDisposable
 
     private var weeklyForecast = MutableLiveData<List<WeeklyForecast>>()
     
@@ -34,7 +35,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
     }
 
     fun getWeekForecast(cityId: Int): LiveData<List<WeeklyForecast>>{
-        disposable!!.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
+        disposable.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
                 override fun onSuccess(t: WeekForecastResponse) {
@@ -60,6 +61,6 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
 
     override fun onCleared() {
         super.onCleared()
-        disposable?.clear()
+        disposable.clear()
     }
 }
