@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zach.weatherapp.Adapter.CityAdapter
@@ -94,6 +95,8 @@ class ForecastDetailsFragment : Fragment(), Injectable {
                 layoutManager = viewManager
                 // specify a viewAdapter
                 adapter = viewAdapter
+
+                addItemDecoration(DividerItemDecoration(activity,LinearLayoutManager.VERTICAL))
             }
         })
 
