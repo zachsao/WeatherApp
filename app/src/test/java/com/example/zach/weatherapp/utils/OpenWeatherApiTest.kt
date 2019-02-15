@@ -73,6 +73,32 @@ class OpenWeatherApiTest {
         assertEquals(path,request.path)
     }
 
+    @Test
+    fun testGetCitiesReturnsError(){
+        val testObserver = TestObserver<OpenWeatherCycleDataResponse>()
+
+        val path = "/data/2.5/find?cnt=5&units=metric&lat=50.36&lon=3.08&appid=$apikey"
+
+        val mockResponse = MockResponse()
+            .setResponseCode(500) // Simulate a 500 HTTP Code
+
+        // Enqueue request
+        mockWebServer.enqueue(mockResponse)
+
+        // Call the API
+        service.getCities(50.36,3.08,apikey).subscribe(testObserver)
+
+        // No values
+        testObserver.assertNoValues()
+        // One error recorded
+        assertEquals(1, testObserver.errorCount())
+
+        // Get the request that was just made
+        val request = mockWebServer.takeRequest()
+        // Make sure we made the request to the required path
+        assertEquals(path, request.path)
+    }
+
     /**
      * Helper function which will load JSON from
      * the path specified
