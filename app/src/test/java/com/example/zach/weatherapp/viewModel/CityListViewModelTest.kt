@@ -1,5 +1,6 @@
 package com.example.zach.weatherapp.viewModel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.data.ForecastRepository
 import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
@@ -10,20 +11,25 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
-
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(JUnit4::class)
 class CityListViewModelTest {
+
+    @Rule
+    @JvmField
+    val rule = InstantTaskExecutorRule()
+
     @Mock
     private lateinit var repository: ForecastRepository
 
-    @Mock
-
+    @InjectMocks
     private lateinit var viewModel: CityListViewModel
 
 
@@ -31,7 +37,7 @@ class CityListViewModelTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler({Schedulers.trampoline()})
 
         MockitoAnnotations.initMocks(this)
-        viewModel = CityListViewModel(repository)
+
     }
 
     @Test
@@ -41,9 +47,12 @@ class CityListViewModelTest {
         `when`(repository.getCities(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble()))
             .thenReturn(Single.just(response))
 
-        viewModel.getCities(0.0,0.0)
+        val result = viewModel.getCities(0.0,0.0)
 
-        verify(repository).getCache()
+
+        verify(repository).getCache() //should be called but isn't
+
+        assertEquals(response.list,result.value) //result.value should be a list of 5 cities but is null
 
     }
 

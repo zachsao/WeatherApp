@@ -15,8 +15,10 @@ import javax.inject.Inject
 
 
 class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRepository):ViewModel() {
-    @Inject lateinit var cities : MutableLiveData<List<City>>
-    @Inject lateinit var disposable : CompositeDisposable
+    //@Inject lateinit
+    var cities : MutableLiveData<List<City>> = MutableLiveData()
+    //@Inject lateinit
+     var disposable : CompositeDisposable = CompositeDisposable()
 
 
     fun getCities(lat: Double,lon:Double): LiveData<List<City>> {
