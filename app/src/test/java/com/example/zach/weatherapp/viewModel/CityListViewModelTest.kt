@@ -1,6 +1,7 @@
 package com.example.zach.weatherapp.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.example.zach.weatherapp.data.City
 import com.example.zach.weatherapp.data.ForecastRepository
 import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
@@ -19,6 +20,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import io.reactivex.plugins.RxJavaPlugins
+
+
 @RunWith(JUnit4::class)
 class CityListViewModelTest {
 
@@ -32,9 +36,13 @@ class CityListViewModelTest {
     @InjectMocks
     private lateinit var viewModel: CityListViewModel
 
+    @Mock
+    lateinit var observer: Observer<List<City>>
+
 
     @Before @Throws fun setUp(){
         RxAndroidPlugins.setInitMainThreadSchedulerHandler({Schedulers.trampoline()})
+        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
 
         MockitoAnnotations.initMocks(this)
 
@@ -47,12 +55,13 @@ class CityListViewModelTest {
         `when`(repository.getCities(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble()))
             .thenReturn(Single.just(response))
 
-        val result = viewModel.getCities(0.0,0.0)
+        viewModel.getCities(0.0,0.0).observeForever(observer)
 
-
+        verify(repository).getCities(0.0,0.0)
         verify(repository).getCache() //should be called but isn't
-
-        assertEquals(response.list,result.value) //result.value should be a list of 5 cities but is null
+        verify(observer).onChanged(response.list)
+        
+        //assertEquals(response.list,result.value) //result.value should be a list of 5 mocked cities but is null
 
     }
 

@@ -26,11 +26,9 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
                 override fun onSuccess(t: OpenWeatherCycleDataResponse) {
-                    val data = t.list.map {city ->
-                        City(city.id,city.name,city.coord,city.weather,city.main,city.wind)
-                    }
+
                     forecastRepo.getCache().saveCities(t.list)
-                    cities.value = data
+                    cities.value = t.list
                 }
 
                 override fun onError(e: Throwable) {
