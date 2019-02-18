@@ -2,6 +2,8 @@ package com.example.zach.weatherapp.ui
 
 
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
@@ -9,6 +11,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
+import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
@@ -35,6 +38,8 @@ class ListFragment : Fragment(), Injectable {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private lateinit var progressView: ProgressBar
+
     lateinit var viewModel: CityListViewModel
 
     @Inject
@@ -50,6 +55,8 @@ class ListFragment : Fragment(), Injectable {
         val binding = DataBindingUtil.inflate<com.example.zach.weatherapp.databinding.FragmentListBinding>(inflater,R.layout.fragment_list, container, false)
         viewManager = LinearLayoutManager(activity)
         recyclerView = binding.list
+        progressView = binding.progressBar
+
 
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
@@ -60,7 +67,7 @@ class ListFragment : Fragment(), Injectable {
 
         if(isOnline()) {
             binding.emptyStateTextView.visibility = View.GONE
-            binding.listFragment.visibility = View.VISIBLE
+            showProgress(true)
 
             viewModel.getCities(latitude, longitude).observe(this, Observer { cities ->
                 Timber.d("Observing cities : %s", cities.toString())
@@ -71,6 +78,7 @@ class ListFragment : Fragment(), Injectable {
                     // specify a viewAdapter
                     adapter = viewAdapter
                 }
+                showProgress(false)
             })
         }else{
             binding.emptyStateTextView.visibility = View.VISIBLE
@@ -90,6 +98,26 @@ class ListFragment : Fragment(), Injectable {
         val connMgr = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         return networkInfo?.isConnected == true
+    }
+
+    private fun showProgress(show: Boolean) {
+        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
+
+        recyclerView.visibility = if (show) View.GONE else View.VISIBLE
+        recyclerView.animate().setDuration(shortAnimTime.toLong()).alpha(
+            (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                recyclerView.visibility = if (show) View.GONE else View.VISIBLE
+            }
+        })
+
+        progressView.visibility = if (show) View.VISIBLE else View.GONE
+        progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
+            (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                progressView.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
