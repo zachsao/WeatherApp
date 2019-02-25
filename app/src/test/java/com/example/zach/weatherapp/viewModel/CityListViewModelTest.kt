@@ -2,9 +2,8 @@ package com.example.zach.weatherapp.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.zach.weatherapp.data.City
-import com.example.zach.weatherapp.data.ForecastRepository
-import com.example.zach.weatherapp.data.OpenWeatherCycleDataResponse
+import com.example.zach.weatherapp.data.*
+import com.example.zach.weatherapp.utils.WeatherCache
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.schedulers.Schedulers
@@ -37,8 +36,10 @@ class CityListViewModelTest {
     private lateinit var viewModel: CityListViewModel
 
     @Mock
-    lateinit var observer: Observer<List<City>>
+    lateinit var cache: WeatherCache
 
+    private val city = City(0,"", Coordinates(0.0,0.0),listOf(Weather(0,"","","")),
+        Forecast(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0))
 
     @Before @Throws fun setUp(){
         RxAndroidPlugins.setInitMainThreadSchedulerHandler({Schedulers.trampoline()})
@@ -50,27 +51,34 @@ class CityListViewModelTest {
 
     @Test
     fun getCities() {
-        val response = getMockedCities(5)
+        val response = OpenWeatherCycleDataResponse(listOf(city))
 
         `when`(repository.getCities(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble()))
             .thenReturn(Single.just(response))
+        `when`(repository.getCache()).thenReturn(cache)
 
-        viewModel.getCities(0.0,0.0).observeForever(observer)
+        val result = viewModel.getCities(0.0,0.0)
 
         verify(repository).getCities(0.0,0.0)
         verify(repository).getCache() //should be called but isn't
-        verify(observer).onChanged(response.list)
+
         
-        //assertEquals(response.list,result.value) //result.value should be a list of 5 mocked cities but is null
+        assertEquals(response.list,result.value) //result.value should be a list of 5 mocked cities but is null
 
     }
 
-    fun getMockedCities(count : Int) : OpenWeatherCycleDataResponse {
-        val cities = ArrayList<City>()
-        for (i in 0..count) {
-            val city = mock(City::class.java)
-            cities.add(city)
-        }
-        return OpenWeatherCycleDataResponse(cities)
+    @Test
+    fun getCityByNameTest(){
+
+        `when`(repository.getCityByName(ArgumentMatchers.anyString()))
+            .thenReturn(Single.just(city))
+
+        `when`(repository.getCache()).thenReturn(cache)
+
+        val result = viewModel.getCityByName("")
+
+        verify(repository).getCityByName("")
+        verify(repository).getCache()
+        assertEquals(result.value,city)
     }
 }

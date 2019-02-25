@@ -24,17 +24,14 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
     fun getCities(lat: Double,lon:Double): LiveData<List<City>> {
         disposable.add(forecastRepo.getCities(lat,lon).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object: DisposableSingleObserver<OpenWeatherCycleDataResponse>(){
-                override fun onSuccess(t: OpenWeatherCycleDataResponse) {
-
-                    forecastRepo.getCache().saveCities(t.list)
-                    cities.value = t.list
-                }
-
-                override fun onError(e: Throwable) {
-                    Timber.e(e.localizedMessage)
-                }
-            }))
+            .subscribe(
+                {response ->
+                    forecastRepo.getCache().saveCities(response.list)
+                    cities.value = response.list
+                },
+                {throwable -> Timber.e(throwable)}
+            )
+        )
         return cities
     }
 
@@ -42,17 +39,13 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
         val searchedCity = MutableLiveData<City>()
         disposable.add(forecastRepo.getCityByName(cityName).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object: DisposableSingleObserver<City>(){
-                override fun onSuccess(t: City) {
-
-                    searchedCity.value = t
-                    forecastRepo.getCache().saveCities(listOf(t))
-                }
-
-                override fun onError(e: Throwable) {
-                    Timber.e(e.localizedMessage)
-                }
-            }))
+            .subscribe(
+                { city ->
+                    searchedCity.value = city
+                    forecastRepo.getCache().saveCities(listOf(city))
+                },{throwable -> Timber.e(throwable) }
+            )
+        )
         return searchedCity
     }
 
