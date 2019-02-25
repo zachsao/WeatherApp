@@ -16,9 +16,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository ):ViewModel() {
-    @Inject lateinit var forecast : MutableLiveData<City>
+    //@Inject lateinit
+    var forecast = MutableLiveData<City>()
 
-    @Inject lateinit var disposable : CompositeDisposable
+    //@Inject lateinit
+    var disposable = CompositeDisposable()
 
     private var weeklyForecast = MutableLiveData<List<WeeklyForecast>>()
     
