@@ -2,13 +2,14 @@ package com.example.zach.weatherapp
 
 import android.app.Activity
 import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.example.zach.weatherapp.utils.AppInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class WeatherApp: Application(), HasActivityInjector {
+class WeatherApp: MultiDexApplication(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>

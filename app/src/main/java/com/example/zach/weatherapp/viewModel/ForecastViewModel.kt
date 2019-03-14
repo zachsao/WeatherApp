@@ -20,6 +20,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
     var forecast = MutableLiveData<City>()
 
     //@Inject lateinit
+
     var disposable = CompositeDisposable()
 
     private var weeklyForecast = MutableLiveData<List<WeeklyForecast>>()

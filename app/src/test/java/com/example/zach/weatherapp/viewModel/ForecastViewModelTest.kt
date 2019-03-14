@@ -33,9 +33,12 @@ class ForecastViewModelTest {
     @Mock
     lateinit var cache: WeatherCache
 
+
     private val city = City(0,"", Coordinates(0.0,0.0),listOf(Weather(0,"","","")),
         Forecast(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0)
     )
+
+    private var cities = listOf(city)
 
     @Before
     fun setUp() {
@@ -46,11 +49,12 @@ class ForecastViewModelTest {
     }
 
     @Test
-    fun getForecast() {
-    }
-
-    @Test
     fun getDetailedWeatherInfo() {
+        `when`(repository.getCache()).thenReturn(cache)
+        `when`(cache.getCitiesFromCache()).thenReturn(cities)
+
+        val result = viewModel.getDetailedWeatherInfo(0)
+        assertEquals(result.value,city)
     }
 
     @Test
