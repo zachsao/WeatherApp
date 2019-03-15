@@ -28,4 +28,9 @@ class CityListScreenTest {
             .perform(RecyclerViewActions.actionOnItemAtPosition<CityAdapter.ForecastViewHolder>(0,click()))
         onView(withId(R.id.temperature_textview)).check(matches(isDisplayed()))
     }
+
+    @Test
+    fun noInternetHidesList(){
+        onView(withId(R.id.emptyStateTextView)).check(matches(isDisplayed()))
+    }
 }
