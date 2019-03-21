@@ -31,9 +31,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,108 +40,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         setupActionBarWithNavController(navController)
 
-        fusedLocationClient = FusedLocationProviderClient(this)
 
-        if(!hasLocationPermission())
-            requestLocationPermission()
-        else{
-            //getLastLocation()
-            createLocationRequest()
-
-        }
-
-    }
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation() {
-        Timber.d("getting last location...")
-        val sharedPreferences = getSharedPreferences("My prefs", 0)
-        val editor = sharedPreferences.edit()
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                val latitude = location.latitude
-                val longitude = location.longitude
-
-                Timber.d("Device location : $latitude, $longitude")
-
-                editor.putString("lat","$latitude")
-                editor.putString("lng", "$longitude")
-                editor.apply()
-            }
-            .addOnFailureListener { exception ->
-                Timber.e("Device location failure: ${exception.message}")
-            }
-    }
-
-    private val REQUEST_CHECK_SETTINGS = 2
-
-    fun createLocationRequest() {
-        val locationRequest = LocationRequest.create()?.apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest!!)
-
-        val client: SettingsClient = LocationServices.getSettingsClient(this)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-        task.addOnSuccessListener { locationSettingsResponse ->
-            // All location settings are satisfied. The client can initialize
-            // location requests here.
-            // ...
-            getLastLocation()
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException){
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-                    exception.startResolutionForResult(this,
-                        REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
-    }
-
-    private fun hasLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
-
-
-    private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-            MY_PERMISSIONS_REQUEST_ACCESS_LOCATION)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo!
-                    Toast.makeText(this,"To continue, enable permission in settings", LENGTH_SHORT).show()
-
-                }
-                return
-            }
-
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
-            }
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
