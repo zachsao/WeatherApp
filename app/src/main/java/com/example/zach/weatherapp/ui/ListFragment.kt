@@ -255,9 +255,9 @@ class ListFragment : Fragment(), Injectable {
 
 
     private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(activity!!,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
             MY_PERMISSIONS_REQUEST_ACCESS_LOCATION)
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -266,10 +266,12 @@ class ListFragment : Fragment(), Injectable {
             MY_PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    // permission was granted, yay! update the location
+                    Timber.i("permission granted !")
+                    createLocationRequest()
                 } else {
                     // permission denied, boo!
+                    Timber.i("permission denied !")
                     Toast.makeText(activity,"To continue, enable permission in settings", LENGTH_SHORT).show()
 
                 }
