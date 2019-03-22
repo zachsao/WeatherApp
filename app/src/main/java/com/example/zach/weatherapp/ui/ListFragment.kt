@@ -180,9 +180,9 @@ class ListFragment : Fragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.refresh -> {
-                createLocationRequest()
+
                 if(isOnline()) {
-                    displayList()
+                    createLocationRequest()
                 }
                 true
             }
@@ -201,6 +201,7 @@ class ListFragment : Fragment(), Injectable {
                 val longitude = location.longitude
 
                 Timber.i("Device location : $latitude, $longitude")
+                viewModel.updateLocation(latitude,longitude)
 
                 editor.putString("lat","$latitude")
                 editor.putString("lng", "$longitude")

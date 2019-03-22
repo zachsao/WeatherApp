@@ -16,9 +16,9 @@ import javax.inject.Inject
 
 class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRepository):ViewModel() {
     //@Inject lateinit
-    var cities : MutableLiveData<List<City>> = MutableLiveData()
+    private var cities : MutableLiveData<List<City>> = MutableLiveData()
     //@Inject lateinit
-     var disposable : CompositeDisposable = CompositeDisposable()
+     private var disposable : CompositeDisposable = CompositeDisposable()
 
 
     fun getCities(lat: Double,lon:Double): LiveData<List<City>> {
@@ -33,6 +33,19 @@ class CityListViewModel @Inject constructor(private var forecastRepo: ForecastRe
             )
         )
         return cities
+    }
+
+    fun updateLocation(lat: Double,lon:Double){
+        disposable.add(forecastRepo.updateCitiesLocation(lat,lon).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {response ->
+                    forecastRepo.getCache().saveCities(response.list)
+                    cities.value = response.list
+                },
+                {throwable -> Timber.e(throwable)}
+            )
+        )
     }
 
     fun getCityByName(cityName: String): LiveData<City>{

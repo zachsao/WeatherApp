@@ -33,6 +33,13 @@ class ForecastRepository @Inject constructor(private var service :OpenWeatherApi
         return response
     }
 
+    fun updateCitiesLocation(lat: Double, lon: Double): Single<OpenWeatherCycleDataResponse> {
+        Timber.d("getting cities from API")
+        val response = service.getCities(lat,lon,API_KEY)
+        weatherCache.put(response)
+        return response
+    }
+
     fun getCityByName(cityName: String): Single<City>{
         return service.getCityByName(cityName,API_KEY)
     }
