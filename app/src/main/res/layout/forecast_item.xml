@@ -2,55 +2,66 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
-       android:orientation="vertical"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/forecast_container">
-        <TextView
-                android:layout_width="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/forecast_max_temp_textview" tools:text="10°"
-                android:fontFamily="@font/roboto_light" android:textSize="18sp" android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-        />
-        <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/forecast_container">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/forecast_max_temp_textview" tools:text="10°"
+                    android:fontFamily="@font/roboto_light" android:textSize="18sp" android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+            />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/day_textView" tools:text="Lundi"
+                    android:fontFamily="@font/roboto_light" android:textSize="18sp"
+                    android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" app:srcCompat="@drawable/sunny"
+                    android:id="@+id/forecast_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/forecast_min_temp_textview" tools:text="17°"
+                    android:fontFamily="@font/roboto_light" android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/temp_separator"
+                    app:layout_constraintBottom_toBottomOf="@+id/forecast_max_temp_textview"
+                    app:layout_constraintTop_toTopOf="@+id/forecast_max_temp_textview"/>
+            <TextView
+                    android:text="/"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/temp_separator" android:textSize="18sp"
+                    android:fontFamily="@font/roboto_light"
+                    app:layout_constraintEnd_toStartOf="@+id/forecast_max_temp_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/day_textView" tools:text="Lundi"
-                android:fontFamily="@font/roboto_light" android:textSize="18sp"
-                android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp" app:srcCompat="@drawable/sunny"
-                android:id="@+id/forecast_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/forecast_min_temp_textview" tools:text="17°"
-                android:fontFamily="@font/roboto_light" android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/temp_separator"
-                app:layout_constraintBottom_toBottomOf="@+id/forecast_max_temp_textview"
-                app:layout_constraintTop_toTopOf="@+id/forecast_max_temp_textview"/>
-        <TextView
-                android:text="/"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/temp_separator" android:textSize="18sp"
-                android:fontFamily="@font/roboto_light"
-                app:layout_constraintEnd_toStartOf="@+id/forecast_max_temp_textview"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/sub_item_recyclerView">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
 
 </layout>
 
