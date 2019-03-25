@@ -37,7 +37,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
         return forecast
     }
 
-    fun getWeekForecast(cityId: Int): LiveData<List<WeeklyForecast>>{
+    fun getWeekForecast(cityId: Int): MutableLiveData<List<WeeklyForecast>> {
         disposable.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
@@ -51,7 +51,8 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
                         three_pm_forecast_list[i].main.temp_min = six_am_forecast_list[i].main.temp_min
                     }
                     //set the liveData value to the updated 3pm list
-                    weeklyForecast.value = three_pm_forecast_list
+                    weeklyForecast.value = t.list//organizeList(t.list)
+                    //three_pm_forecast_list
 
 
                 }

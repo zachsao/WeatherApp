@@ -57,7 +57,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/sub_item_recyclerView">
+                android:id="@+id/sub_item_recyclerView" android:orientation="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
