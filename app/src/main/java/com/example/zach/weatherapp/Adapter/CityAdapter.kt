@@ -23,8 +23,8 @@ class CityAdapter(var myDataset: List<City>) :
                 //cityItem = boundCity
                 cityNameTextview.text = boundCity.name
                 cityForecastTextview.text = boundCity.weather[0].description
-                maxTemperatureTextview.text = "${boundCity.main.temp_max}°"
-                minTemperatureTextview.text = "${boundCity.main.temp_min}°"
+                maxTemperatureTextview.text = "${boundCity.main.temp_max.toInt()}°"
+                minTemperatureTextview.text = "${boundCity.main.temp_min.toInt()}°"
 
                 Glide.with(root.context)
                     .load("http://openweathermap.org/img/w/${boundCity.weather[0].icon}.png")

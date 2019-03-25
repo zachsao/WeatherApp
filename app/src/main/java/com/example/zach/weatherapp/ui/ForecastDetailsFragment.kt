@@ -74,6 +74,9 @@ class ForecastDetailsFragment : Fragment(), Injectable {
             Timber.d("Displaying city : %s",weatherInfo?.name)
             if (weatherInfo != null) {
                 binding.city = weatherInfo
+                binding.temperatureTextview.text = "${weatherInfo.main.temp.toInt()}°"
+                binding.maxTemperatureTextview.text = "${weatherInfo.main.temp_max.toInt()}°"
+                binding.minTemperatureTextview.text = "${weatherInfo.main.temp_min.toInt()}°"
                 (activity as AppCompatActivity).supportActionBar?.title = weatherInfo.name
 
                 if(isOnline()){
