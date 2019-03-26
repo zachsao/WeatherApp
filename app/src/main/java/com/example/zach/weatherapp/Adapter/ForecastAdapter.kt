@@ -56,6 +56,7 @@ class ForecastAdapter(var mData: Array<MutableList<WeeklyForecast>>) : RecyclerV
             binding.dayTextView.text = parseDate(weeklyForecast.dt_txt)
             binding.forecastMaxTempTextview.text = "${weeklyForecast.main.temp_max.toInt()}°"
             binding.forecastMinTempTextview.text = "${weeklyForecast.main.temp_min.toInt()}°"
+            binding.descriptionTextView.text = weeklyForecast.weather[0].description
 
             val expanded = weeklyForecast.expanded
             binding.subItemRecyclerView.visibility = when(expanded){
