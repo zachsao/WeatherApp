@@ -13,6 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository ):ViewModel() {
@@ -23,7 +24,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
 
     var disposable = CompositeDisposable()
 
-    private var weeklyForecast = MutableLiveData<List<WeeklyForecast>>()
+    private var weeklyForecast = MutableLiveData<Array<MutableList<WeeklyForecast>>>()
     
     fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
         val cache = forecastRepo.getCache().getCitiesFromCache()
@@ -37,23 +38,12 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
         return forecast
     }
 
-    fun getWeekForecast(cityId: Int): MutableLiveData<List<WeeklyForecast>> {
+    fun getWeekForecast(cityId: Int): MutableLiveData<Array<MutableList<WeeklyForecast>>> {
         disposable.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
                 override fun onSuccess(t: WeekForecastResponse) {
-                    //filter the result list with the 3pm forecast to get overall max temperature
-                    val three_pm_forecast_list = t.list.filter { it.dt_txt.contains("15:00") }
-                    //filter the result list with the 6am forecast to get overall min temperature
-                    val six_am_forecast_list = t.list.filter { it.dt_txt.contains("06:00")}
-                    //store the 6am min_temp values in the 3pm min_temp properties
-                    for(i in six_am_forecast_list.indices){
-                        three_pm_forecast_list[i].main.temp_min = six_am_forecast_list[i].main.temp_min
-                    }
-                    //set the liveData value to the updated 3pm list
-                    weeklyForecast.value = t.list//organizeList(t.list)
-                    //three_pm_forecast_list
-
+                    weeklyForecast.value = organizeList(5,t.list)
 
                 }
                 override fun onError(e: Throwable) {
@@ -61,6 +51,23 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
                 }
             }))
         return weeklyForecast
+    }
+
+    fun organizeList(length: Int,L: List<WeeklyForecast>): Array<MutableList<WeeklyForecast>> {
+        val days = Array(length, {mutableListOf<WeeklyForecast>()})
+
+        days[0].add(L[0])
+        var k = 1
+        for(i in 0..days.size){
+            while(k<L.size && L[k].dt_txt.subSequence(0,10).equals(L[k-1].dt_txt.subSequence(0,10))){
+                days[i].add(L[k])
+                k++
+            }
+            if(i<days.size-1 && k<days.size)
+                days[i+1].add(L[k])
+            k++
+        }
+        return days
     }
 
     override fun onCleared() {

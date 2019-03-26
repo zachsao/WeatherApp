@@ -14,7 +14,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
+class ForecastAdapter(var mData: Array<MutableList<WeeklyForecast>>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         val inflater =  LayoutInflater.from(parent.context)
 
@@ -25,56 +25,29 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
 
     override fun getItemCount() = mData.size
 
-    fun organizeList(length: Int,L: List<WeeklyForecast>): Array<MutableList<WeeklyForecast>>{
-        val days = Array(length, {mutableListOf<WeeklyForecast>()})
-
-        days[0].add(L[0])
-        var k = 1
-        for(i in 0..days.size){
-            while(k<L.size && L[k].dt_txt.equals(L[k-1].dt_txt)){
-                days[i].add(L[k])
-                k++
-            }
-            if(i+1<days.size)
-                days[i+1].add(L[k])
-            k++
-        }
-        return days
-    }
-
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
 
-        /*val three_pm_forecast_list = mData.filter { it.dt_txt.contains("15:00") }
+        val day = mData[position]
 
-        if(position<three_pm_forecast_list.size){
-            val forecast = three_pm_forecast_list[position]
+        val daily_max_temp = day.maxBy { it.main.temp_max }
+        val daily_min_temp = day.minBy { it.main.temp_min }
 
-            val days = organizeList(three_pm_forecast_list.size,mData)//.filter { it.size > 5 }
-            Timber.i(Arrays.toString(days))
+        daily_max_temp!!.main.temp_min = daily_min_temp!!.main.temp_min
 
 
-            holder.bind(forecast)
-
-            holder.binding.root.setOnClickListener{
-                val expanded = forecast.expanded
-                forecast.expanded = !expanded
-                notifyItemChanged(position)
-            }
-
-            holder.binding.subItemRecyclerView.apply {
-                layoutManager = LinearLayoutManager(holder.binding.root.context, HORIZONTAL,false)
-                adapter = HourlyForecastAdapter(days[position])
-
-            }
-        }*/
-
-        val forecast = mData[position]
+        val forecast = daily_max_temp
         holder.bind(forecast)
 
         holder.binding.root.setOnClickListener {
             val expanded = forecast.expanded
             forecast.expanded = !expanded
             notifyItemChanged(position)
+        }
+
+        holder.binding.subItemRecyclerView.apply {
+            layoutManager = LinearLayoutManager(holder.binding.root.context, HORIZONTAL,false)
+            adapter = HourlyForecastAdapter(day)
+
         }
     }
 
@@ -88,12 +61,6 @@ class ForecastAdapter(var mData: List<WeeklyForecast>) : RecyclerView.Adapter<Fo
             binding.subItemRecyclerView.visibility = when(expanded){
                 true -> View.VISIBLE
                 false -> View.GONE
-            }
-
-            binding.subItemRecyclerView.apply {
-                layoutManager = LinearLayoutManager(binding.root.context, HORIZONTAL,false)
-                adapter = HourlyForecastAdapter(mData)
-
             }
 
             GlideApp.with(binding.root.context)
