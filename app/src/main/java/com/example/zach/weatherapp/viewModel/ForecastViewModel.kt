@@ -43,7 +43,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
                 override fun onSuccess(t: WeekForecastResponse) {
-                    weeklyForecast.value = organizeList(5,t.list)
+                    weeklyForecast.value = organizeList(6,t.list)
 
                 }
                 override fun onError(e: Throwable) {
