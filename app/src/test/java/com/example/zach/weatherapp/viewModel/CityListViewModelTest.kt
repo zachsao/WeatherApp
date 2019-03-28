@@ -3,6 +3,7 @@ package com.example.zach.weatherapp.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.zach.weatherapp.data.*
+import com.example.zach.weatherapp.utils.LocationService
 import com.example.zach.weatherapp.utils.WeatherCache
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -32,6 +33,9 @@ class CityListViewModelTest {
     @Mock
     private lateinit var repository: ForecastRepository
 
+    @Mock
+    private lateinit var locationService: LocationService
+
     @InjectMocks
     private lateinit var viewModel: CityListViewModel
 
@@ -53,17 +57,17 @@ class CityListViewModelTest {
     fun getCities() {
         val response = OpenWeatherCycleDataResponse(listOf(city))
 
-        `when`(repository.getCities(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble()))
+        `when`(repository.updateCitiesLocation(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble()))
             .thenReturn(Single.just(response))
         `when`(repository.getCache()).thenReturn(cache)
 
-        val result = viewModel.getCities(0.0,0.0)
+        val result = viewModel.updateLocation(0.0,0.0)
 
-        verify(repository).getCities(0.0,0.0)
+        verify(repository).updateCitiesLocation(0.0,0.0)
         verify(repository).getCache() //should be called but isn't
 
         
-        assertEquals(response.list,result.value) //result.value should be a list of 5 mocked cities but is null
+        assertEquals(viewModel.getCities().value,listOf(city)) //result.value should be a list of 5 mocked cities but is null
 
     }
 

@@ -45,6 +45,10 @@ import javax.inject.Inject
  */
 class ListFragment : Fragment(), Injectable {
 
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -58,9 +62,12 @@ class ListFragment : Fragment(), Injectable {
 
     private lateinit var binding: FragmentListBinding
 
-    private val MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+        if(!hasLocationPermission())
+            requestLocationPermission()
+    }
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(
@@ -69,22 +76,18 @@ class ListFragment : Fragment(), Injectable {
     ): View? {
 
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate<com.example.zach.weatherapp.databinding.FragmentListBinding>(inflater,R.layout.fragment_list, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_list, container, false)
         viewManager = LinearLayoutManager(activity)
         recyclerView = binding.list
         progressView = binding.progressBar
-        fusedLocationClient = FusedLocationProviderClient(activity!!)
+
 
         viewModel = ViewModelProviders.of(this,factory).get(CityListViewModel::class.java)
 
 
-        if(!hasLocationPermission())
-            requestLocationPermission()
-        else{
-            createLocationRequest()
-        }
 
         if(isOnline()) {
+            viewModel.listenToLocations()
             displayList()
         }else{
             binding.emptyStateTextView.visibility = View.VISIBLE
@@ -96,14 +99,10 @@ class ListFragment : Fragment(), Injectable {
     }
 
     private fun displayList() {
-        val coordinates = getLocation()
-        val latitude = coordinates[0]
-        val longitude = coordinates[1]
-        Timber.i("new coordinates : $latitude - $longitude")
         binding.emptyStateTextView.visibility = View.GONE
         showProgress(true)
 
-        viewModel.getCities(latitude, longitude).observe(this, Observer { cities ->
+        viewModel.getCities().observe(this, Observer { cities ->
             Timber.i("Observing cities : %s", cities.toString())
             viewAdapter = CityAdapter(cities)
             recyclerView.apply {
@@ -114,11 +113,6 @@ class ListFragment : Fragment(), Injectable {
             }
             showProgress(false)
         })
-    }
-
-    fun getLocation(): List<Double>{
-        val sharedPreferences = activity?.getSharedPreferences("My prefs" ,0)
-        return listOf(sharedPreferences?.getString("lat","48.85341")!!.toDouble(),sharedPreferences.getString("lng","2.3488")!!.toDouble())
     }
 
     fun isOnline(): Boolean {
@@ -182,7 +176,7 @@ class ListFragment : Fragment(), Injectable {
             R.id.refresh -> {
 
                 if(isOnline()) {
-                    createLocationRequest()
+                    viewModel.listenToLocations()
                 }
                 true
             }
@@ -190,72 +184,26 @@ class ListFragment : Fragment(), Injectable {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation() {
-        Timber.i("getting last location...")
-        val sharedPreferences = activity!!.getSharedPreferences("My prefs", 0)
-        val editor = sharedPreferences.edit()
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                val latitude = location.latitude
-                val longitude = location.longitude
-
-                Timber.i("Device location : $latitude, $longitude")
-                viewModel.updateLocation(latitude,longitude)
-
-                editor.putString("lat","$latitude")
-                editor.putString("lng", "$longitude")
-                editor.apply()
-            }
-            .addOnFailureListener { exception ->
-                Timber.e("Device location failure: ${exception.message}")
-            }
+    override fun onResume() {
+        super.onResume()
+        viewModel.startLocation()
     }
 
-    private val REQUEST_CHECK_SETTINGS = 2
-
-    fun createLocationRequest() {
-        val locationRequest = LocationRequest.create()?.apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest!!)
-
-        val client: SettingsClient = LocationServices.getSettingsClient(activity!!)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-        task.addOnSuccessListener { locationSettingsResponse ->
-            // All location settings are satisfied. The client can initialize
-            // location requests here.
-            // ...
-            getLastLocation()
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException){
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-                    exception.startResolutionForResult(activity,
-                        REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopLocation()
     }
+
+
+
 
     private fun hasLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
-            activity!!, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            activity!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
-
     private fun requestLocationPermission() {
-        requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             MY_PERMISSIONS_REQUEST_ACCESS_LOCATION)
 
     }
@@ -268,7 +216,8 @@ class ListFragment : Fragment(), Injectable {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted, yay! update the location
                     Timber.i("permission granted !")
-                    createLocationRequest()
+                    viewModel.startLocation()
+                    viewModel.listenToLocations()
                 } else {
                     // permission denied, boo!
                     Timber.i("permission denied !")
@@ -282,4 +231,5 @@ class ListFragment : Fragment(), Injectable {
             }
         }
     }
+
 }
