@@ -9,11 +9,20 @@ This app uses the OpenWeatherMap Api to fetch weather data.
 In order to run this app you will need an API key:
 
 - Create an account on : https://home.openweathermap.org/users/sign_in
-
 - Copy the default api key.
-
 - On your computer, in C:/users/<your_username>/.gradle open the gradle.properties file (or create it if it doesn't exist)
 - Write : OpenWeatherApiKey = "<your_api_key>"
+
+## MapBox
+
+This app uses the MapBox Places Api to fetch search for cities.
+
+In order to run this app you will need an access token:
+
+- Create a MapBox account
+- Create an access token
+- In C:/users/<your_username>/.gradle open the gradle.properties
+- Write : MapboxAutoCompleteApiKey = "<your_access_token>"
 
 ## Run project on Android Studio
 
