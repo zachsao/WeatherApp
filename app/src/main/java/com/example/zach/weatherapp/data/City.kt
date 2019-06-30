@@ -4,7 +4,7 @@ data class City(var id: Int,
                 var name: String,
                 var coord : Coordinates,
                 var weather: List<Weather>,
-                var main :Forecast,
+                var main :Main,
                 var wind: Wind)
 
 data class Coordinates(var lat: Double, var lon: Double)

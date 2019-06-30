@@ -4,70 +4,57 @@ package com.example.zach.weatherapp.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.zach.weatherapp.data.City
-import com.example.zach.weatherapp.data.ForecastRepository
-import com.example.zach.weatherapp.data.WeekForecastResponse
-import com.example.zach.weatherapp.data.WeeklyForecast
+import com.example.zach.weatherapp.data.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
-class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository ):ViewModel() {
-    //@Inject lateinit
-    var forecast = MutableLiveData<City>()
-
-    //@Inject lateinit
-
+class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRepository) : ViewModel() {
+    var forecast = MutableLiveData<ForecastViewItem>()
     var disposable = CompositeDisposable()
 
-    private var weeklyForecast = MutableLiveData<Array<MutableList<WeeklyForecast>>>()
-    
-    fun getDetailedWeatherInfo(cityId: Int): LiveData<City> {
+    private var weeklyForecast = MutableLiveData<List<List<WeeklyForecast>>>()
+
+    fun getDetailedWeatherInfo(cityId: Int): LiveData<ForecastViewItem> {
         val cache = forecastRepo.getCache().getCitiesFromCache()
         cache?.forEach { city ->
             when (city.id) {
-                cityId -> forecast.value = city
+                cityId -> forecast.value = modelToItemView(city)
             }
         }
-
-
         return forecast
     }
 
-    fun getWeekForecast(cityId: Int): MutableLiveData<Array<MutableList<WeeklyForecast>>> {
+    fun getWeekForecast(cityId: Int): MutableLiveData<List<List<WeeklyForecast>>> {
         disposable.add(forecastRepo.get5DayForecast(cityId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object: DisposableSingleObserver<WeekForecastResponse>(){
+            .subscribeWith(object : DisposableSingleObserver<WeekForecastResponse>() {
                 override fun onSuccess(t: WeekForecastResponse) {
-                    weeklyForecast.value = organizeList(6,t.list)
-
+                    weeklyForecast.value = t.list.groupBy { it.dt_txt.substring(0, 10) }.map { it.value }
                 }
                 override fun onError(e: Throwable) {
                     Timber.e(e.localizedMessage)
                 }
-            }))
+            })
+        )
         return weeklyForecast
     }
 
-    fun organizeList(length: Int,L: List<WeeklyForecast>): Array<MutableList<WeeklyForecast>> {
-        val days = Array(length, {mutableListOf<WeeklyForecast>()})
-
-        days[0].add(L[0])
-        var k = 1
-        for(i in 0..days.size){
-            while(k<L.size && L[k].dt_txt.subSequence(0,10).equals(L[k-1].dt_txt.subSequence(0,10))){
-                days[i].add(L[k])
-                k++
-            }
-            if(i<days.size-1 && k<days.size)
-                days[i+1].add(L[k])
-            k++
-        }
-        return days
+    private fun modelToItemView(city: City): ForecastViewItem{
+        return ForecastViewItem(
+            city.name,
+            city.weather[0].description,
+            city.main.temp.toInt(),
+            city.main.temp_max.toInt(),
+            city.main.temp_min.toInt(),
+            city.main.pressure,
+            city.wind.speed,
+            city.main.humidity,
+            "http://openweathermap.org/img/w/${city.weather[0].icon}.png"
+        )
     }
 
     override fun onCleared() {

@@ -1,6 +1,6 @@
 package com.example.zach.weatherapp.data
 
-data class WeeklyForecast(var main: Forecast,
+data class WeeklyForecast(var main: Main,
                           var weather: List<Weather>,
                           var dt_txt: String){
 

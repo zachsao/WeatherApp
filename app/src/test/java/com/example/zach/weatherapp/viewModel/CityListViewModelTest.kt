@@ -1,7 +1,6 @@
 package com.example.zach.weatherapp.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.example.zach.weatherapp.data.*
 import com.example.zach.weatherapp.utils.LocationService
 import com.example.zach.weatherapp.utils.WeatherCache
@@ -43,7 +42,7 @@ class CityListViewModelTest {
     lateinit var cache: WeatherCache
 
     private val city = City(0,"", Coordinates(0.0,0.0),listOf(Weather(0,"","","")),
-        Forecast(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0))
+        Main(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0))
 
     @Before @Throws fun setUp(){
         RxAndroidPlugins.setInitMainThreadSchedulerHandler({Schedulers.trampoline()})

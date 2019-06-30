@@ -1,6 +1,5 @@
 package com.example.zach.weatherapp
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,8 +10,7 @@ import androidx.test.runner.AndroidJUnit4
 import org.junit.Rule
 import org.junit.runner.RunWith
 import androidx.test.rule.ActivityTestRule
-import com.example.zach.weatherapp.Adapter.CityAdapter
-import com.example.zach.weatherapp.data.City
+import com.example.zach.weatherapp.adapter.CityAdapter
 import org.junit.Test
 
 @RunWith(AndroidJUnit4::class)

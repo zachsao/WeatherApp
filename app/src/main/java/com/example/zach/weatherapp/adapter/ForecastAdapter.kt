@@ -1,4 +1,4 @@
-package com.example.zach.weatherapp.Adapter
+package com.example.zach.weatherapp.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +10,10 @@ import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.ForecastItemBinding
 import com.example.zach.weatherapp.utils.GlideApp
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ForecastAdapter(var mData: Array<MutableList<WeeklyForecast>>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
+class ForecastAdapter(var mData: List<List<WeeklyForecast>>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         val inflater =  LayoutInflater.from(parent.context)
 

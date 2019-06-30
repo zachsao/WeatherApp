@@ -1,10 +1,8 @@
-package com.example.zach.weatherapp.Adapter
+package com.example.zach.weatherapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.data.WeeklyForecast
 import com.example.zach.weatherapp.databinding.SubItemHourlyForecastBinding
 import com.example.zach.weatherapp.utils.GlideApp

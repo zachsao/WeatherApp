@@ -35,7 +35,7 @@ class ForecastViewModelTest {
 
 
     private val city = City(0,"", Coordinates(0.0,0.0),listOf(Weather(0,"","","")),
-        Forecast(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0)
+        Main(0.0,0.0,0,0.0,0.0), Wind(0.0,0.0)
     )
 
     private var cities = listOf(city)
@@ -59,10 +59,10 @@ class ForecastViewModelTest {
 
     @Test
     fun getWeekForecast_returns3pmForecast() {
-        val expected_result = listOf(WeeklyForecast(Forecast(0.0,0.0,0,0.0,0.0),
+        val expected_result = listOf(WeeklyForecast(Main(0.0,0.0,0,0.0,0.0),
             listOf(Weather(0,"","","")),"15:00"))
 
-        val shouldnt_be_in_result = WeeklyForecast(Forecast(0.0,0.0,0,0.0,0.0),
+        val shouldnt_be_in_result = WeeklyForecast(Main(0.0,0.0,0,0.0,0.0),
             listOf(Weather(0,"","","")),"")
 
         val response = WeekForecastResponse(listOf(expected_result[0],shouldnt_be_in_result))
