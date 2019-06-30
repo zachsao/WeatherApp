@@ -4,9 +4,12 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -21,13 +24,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.zach.weatherapp.BuildConfig
 import com.example.zach.weatherapp.R
 import com.example.zach.weatherapp.adapter.CityAdapter
 import com.example.zach.weatherapp.databinding.FragmentListBinding
 import com.example.zach.weatherapp.utils.Injectable
 import com.example.zach.weatherapp.viewModel.CityListViewModel
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,6 +43,7 @@ class ListFragment : Fragment(), Injectable {
 
     companion object {
         const val MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1
+        const val REQUEST_CODE_AUTOCOMPLETE = 2
     }
 
     private lateinit var recyclerView: RecyclerView
@@ -126,29 +135,20 @@ class ListFragment : Fragment(), Injectable {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
-
-        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.getCityByName(query!!).observe(this@ListFragment, Observer { city ->
-                        viewAdapter = CityAdapter(listOf(city))
-                        recyclerView.apply {
-                            layoutManager = viewManager
-                            adapter = viewAdapter
-                        }
-                    })
-                    return false
-                }
-            })
-        }
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+            val feature = PlaceAutocomplete.getPlace(data)
+            viewModel.getCityByName(feature.placeName()?: "Paris").observe(this@ListFragment, Observer { city ->
+                findNavController(this).navigate(ListFragmentDirections.actionListFragmentToForecastDetailsFragment(city.id))
+            })
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -158,8 +158,25 @@ class ListFragment : Fragment(), Injectable {
                 }
                 true
             }
+            R.id.search -> openAutoComplete()
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openAutoComplete(): Boolean {
+        val placeOptions = PlaceOptions.builder()
+            .hint("Search a city")
+            .backgroundColor(Color.WHITE)
+            .geocodingTypes("region", "place") // We only want to search a city
+            .historyCount(0)
+            .build()
+
+        val intent = PlaceAutocomplete.IntentBuilder()
+            .accessToken(BuildConfig.MAPBOX_AUTOCOMPLETE_API_KEY)
+            .placeOptions(placeOptions)
+            .build(activity)
+        startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+        return true
     }
 
     override fun onResume() {

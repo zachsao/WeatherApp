@@ -59,7 +59,6 @@ class CityListViewModel @Inject constructor(
     }
 
     fun listenToLocations() {
-
         locationService.registerToLocations()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

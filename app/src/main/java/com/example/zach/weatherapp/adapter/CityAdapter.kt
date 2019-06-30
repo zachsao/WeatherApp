@@ -12,7 +12,7 @@ import com.example.zach.weatherapp.databinding.CityListItemBinding
 import com.example.zach.weatherapp.ui.ListFragmentDirections
 import timber.log.Timber
 
-class CityAdapter(var myDataset: List<City>) :
+class CityAdapter(private val myDataset: List<City>) :
     RecyclerView.Adapter<CityAdapter.ForecastViewHolder>() {
 
     var context:Context?=null
