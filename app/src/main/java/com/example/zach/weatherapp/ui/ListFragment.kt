@@ -112,25 +112,8 @@ class ListFragment : Fragment(), Injectable {
     }
 
     private fun showProgress(show: Boolean) {
-        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
-
         recyclerView.visibility = if (show) View.GONE else View.VISIBLE
-        recyclerView.animate().setDuration(shortAnimTime.toLong()).alpha(
-            (if (show) 0 else 1).toFloat()
-        ).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                recyclerView.visibility = if (show) View.GONE else View.VISIBLE
-            }
-        })
-
         progressView.visibility = if (show) View.VISIBLE else View.GONE
-        progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
-            (if (show) 1 else 0).toFloat()
-        ).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                progressView.visibility = if (show) View.VISIBLE else View.GONE
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
