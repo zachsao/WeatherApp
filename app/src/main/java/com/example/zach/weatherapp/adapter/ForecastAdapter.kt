@@ -64,7 +64,7 @@ class ForecastAdapter(var mData: List<List<WeeklyForecast>>) : RecyclerView.Adap
             }
 
             GlideApp.with(binding.root.context)
-                .load("http://openweathermap.org/img/w/${weeklyForecast.weather[0].icon}.png")
+                .load("http://openweathermap.org/img/wn/${weeklyForecast.weather[0].icon}@2x.png")
                 .error(R.drawable.ic_error)
                 .into(binding.forecastIcon)
         }

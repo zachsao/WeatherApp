@@ -27,7 +27,7 @@ class CityAdapter(private val myDataset: List<City>) :
                 minTemperatureTextview.text = "${boundCity.main.temp_min.toInt()}°"
 
                 Glide.with(root.context)
-                    .load("http://openweathermap.org/img/w/${boundCity.weather[0].icon}.png")
+                    .load("http://openweathermap.org/img/wn/${boundCity.weather[0].icon}@2x.png")
                     .into(forceastImageView)
 
                 container.setOnClickListener{ view: View ->

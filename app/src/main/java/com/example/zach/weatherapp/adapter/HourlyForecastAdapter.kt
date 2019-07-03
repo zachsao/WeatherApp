@@ -29,7 +29,7 @@ class HourlyForecastAdapter(var mData: List<WeeklyForecast>): RecyclerView.Adapt
             binding.temperatureTextview.text = "${weeklyForecast.main.temp.toInt()}"
 
             GlideApp.with(binding.root.context)
-                .load("http://openweathermap.org/img/w/${weeklyForecast.weather[0].icon}.png")
+                .load("http://openweathermap.org/img/wn/${weeklyForecast.weather[0].icon}@2x.png")
                 .into(binding.weatherIconImageView)
         }
 

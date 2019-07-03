@@ -53,7 +53,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
             city.main.pressure,
             city.wind.speed,
             city.main.humidity,
-            "http://openweathermap.org/img/w/${city.weather[0].icon}.png"
+            "http://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png"
         )
     }
 

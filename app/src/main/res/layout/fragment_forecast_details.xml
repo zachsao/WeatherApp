@@ -8,7 +8,8 @@
         <variable name="city" type="com.example.zach.weatherapp.data.ForecastViewItem"/>
     </data>
 
-    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="@color/colorAccent">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +68,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/pressure_textview" app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="16dp" android:layout_marginTop="32dp"
-                    app:layout_constraintTop_toBottomOf="@+id/temperature_textview" android:fontFamily="@font/roboto_light"
+                    app:layout_constraintTop_toBottomOf="@+id/temperature_textview"
+                    android:fontFamily="@font/roboto_light"
                     android:text="@string/pressure_text"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -86,7 +88,8 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/pressure_value_textview" app:layout_constraintStart_toEndOf="@+id/pressure_textview"
+                    android:id="@+id/pressure_value_textview"
+                    app:layout_constraintStart_toEndOf="@+id/pressure_textview"
                     android:layout_marginStart="8dp"
                     app:layout_constraintTop_toTopOf="@+id/pressure_textview"
                     tools:text="1020 hPa"
@@ -96,7 +99,8 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/humidity_value_textview" app:layout_constraintStart_toEndOf="@+id/humidity_textview"
+                    android:id="@+id/humidity_value_textview"
+                    app:layout_constraintStart_toEndOf="@+id/humidity_textview"
                     android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/pressure_value_textview"
                     tools:text="34%"
                     android:text="@{city.humidity + `%`}"
@@ -114,13 +118,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView9" app:layout_constraintEnd_toStartOf="@+id/max_temperature_textview"
-                    app:layout_constraintTop_toTopOf="@+id/max_temperature_textview" android:fontFamily="@font/roboto_light"/>
+                    app:layout_constraintTop_toTopOf="@+id/max_temperature_textview"
+                    android:fontFamily="@font/roboto_light"/>
             <TextView
                     android:text="Min: "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView10" app:layout_constraintEnd_toStartOf="@+id/min_temperature_textview"
-                    app:layout_constraintTop_toTopOf="@+id/min_temperature_textview" android:fontFamily="@font/roboto_light"/>
+                    app:layout_constraintTop_toTopOf="@+id/min_temperature_textview"
+                    android:fontFamily="@font/roboto_light"/>
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
