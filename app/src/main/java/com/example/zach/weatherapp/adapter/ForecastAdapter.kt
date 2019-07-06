@@ -71,7 +71,7 @@ class ForecastAdapter(var mData: List<List<WeeklyForecast>>) : RecyclerView.Adap
 
         private fun parseDate(dt_txt:String):String{
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH)
-            val dateFormat2 = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
+            val dateFormat2 = SimpleDateFormat("EEE dd MMM")
             val date = dateFormat.parse(dt_txt)
             return dateFormat2.format(date)
         }

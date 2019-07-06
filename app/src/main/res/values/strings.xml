@@ -8,4 +8,5 @@
     <string name="search_label">Rechercher</string>
     <string name="search_hint">Rechercher une ville</string>
     <string name="refresh">Refresh</string>
+    <string name="humidity">humidity</string>
 </resources>

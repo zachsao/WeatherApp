@@ -51,7 +51,7 @@ class ForecastViewModel @Inject constructor(private var forecastRepo: ForecastRe
             city.main.temp_max.toInt(),
             city.main.temp_min.toInt(),
             city.main.pressure,
-            city.wind.speed,
+            city.wind.speed.toInt()*3.6,
             city.main.humidity,
             "http://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png"
         )

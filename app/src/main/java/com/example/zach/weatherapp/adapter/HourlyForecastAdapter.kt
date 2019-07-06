@@ -26,7 +26,7 @@ class HourlyForecastAdapter(var mData: List<WeeklyForecast>): RecyclerView.Adapt
     inner class HourlyViewHolder(var binding: SubItemHourlyForecastBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(weeklyForecast: WeeklyForecast) {
             binding.hourTextView.text = parseDate(weeklyForecast.dt_txt)
-            binding.temperatureTextview.text = "${weeklyForecast.main.temp.toInt()}"
+            binding.temperatureTextview.text = "${weeklyForecast.main.temp.toInt()}°"
 
             GlideApp.with(binding.root.context)
                 .load("http://openweathermap.org/img/wn/${weeklyForecast.weather[0].icon}@2x.png")
